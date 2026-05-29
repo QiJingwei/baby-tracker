@@ -47,7 +47,7 @@
   /* ── 快捷按钮 ── */
   .quick-section{padding:20px 16px 8px}
   .section-title{font-size:13px;color:var(--text-muted);letter-spacing:.5px;margin-bottom:12px;padding-left:4px}
-  .quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .quick-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
   .quick-btn{background:var(--white);border:none;border-radius:var(--radius-sm);padding:14px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:var(--card-shadow);transition:transform .15s}
   .quick-btn:active{transform:scale(.94)}
   .quick-btn .icon{font-size:26px;line-height:1}
@@ -81,6 +81,7 @@
   .type-food .record-icon-wrap{background:#ecfdf5}.type-poop .record-icon-wrap{background:#fffbeb}
   .type-play .record-icon-wrap{background:#f0f9ff}.type-mood .record-icon-wrap{background:#fdf2f8}
   .type-weight .record-icon-wrap{background:#eef2ff}.type-note .record-icon-wrap{background:#f9fafb}
+  .type-bath .record-icon-wrap{background:#e0f2fe}
   .record-body{flex:1;min-width:0}
   .record-title{font-size:13px;font-weight:500;margin-bottom:2px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
   .record-detail{font-size:12px;color:var(--text-muted);line-height:1.5}
@@ -208,6 +209,67 @@
   .sync-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
   .sync-dot.ok{background:var(--mint)}.sync-dot.err{background:#f87171}.sync-dot.loading{background:var(--yellow);animation:pulse 1s infinite}
 
+  /* ── 导入按钮 ── */
+  .btn-import{width:100%;background:linear-gradient(135deg,#818cf8,#6366f1);color:white;border:none;border-radius:var(--radius-sm);padding:14px;font-size:15px;font-family:'Noto Sans SC',sans-serif;font-weight:500;cursor:pointer;box-shadow:0 4px 16px rgba(99,102,241,.3);transition:transform .15s}
+  .btn-import:active{transform:scale(.97)}
+
+  /* ── 导入页 ── */
+  .import-page{padding:0 0 20px}
+  .import-header{background:linear-gradient(135deg,#818cf8,#6366f1);padding:20px 16px 20px;position:relative;overflow:hidden}
+  .import-header::before{content:'';position:absolute;width:150px;height:150px;background:rgba(255,255,255,.12);border-radius:50%;top:-40px;right:-30px}
+  .import-back{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,.8);font-size:14px;margin-bottom:12px;cursor:pointer;background:none;border:none;font-family:'Noto Sans SC',sans-serif;padding:0}
+  .import-title{font-family:'Ma Shan Zheng',cursive;font-size:26px;color:white;position:relative;z-index:1}
+  .import-subtitle{font-size:12px;color:rgba(255,255,255,.75);margin-top:4px;position:relative;z-index:1}
+
+  .import-body{padding:16px}
+
+  /* 上传区 */
+  .upload-zone{border:2px dashed #c4b5fd;border-radius:var(--radius);padding:28px 20px;text-align:center;cursor:pointer;transition:all .2s;background:white;position:relative}
+  .upload-zone:active{background:#f5f3ff;border-color:#818cf8}
+  .upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer}
+  .upload-icon{font-size:40px;margin-bottom:8px}
+  .upload-text{font-size:15px;font-weight:500;color:#4f46e5;margin-bottom:4px}
+  .upload-hint{font-size:12px;color:var(--text-muted)}
+
+  /* 图片队列 */
+  .img-queue{display:flex;flex-direction:column;gap:12px;margin-top:16px}
+  .img-item{background:white;border-radius:var(--radius-sm);overflow:hidden;box-shadow:var(--card-shadow)}
+  .img-item-header{display:flex;align-items:center;gap:10px;padding:10px 12px}
+  .img-thumb{width:48px;height:48px;object-fit:cover;border-radius:8px;flex-shrink:0}
+  .img-info{flex:1;min-width:0}
+  .img-name{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .img-status{font-size:11px;margin-top:2px}
+  .img-status.pending{color:var(--text-muted)}
+  .img-status.parsing{color:#6366f1}
+  .img-status.done{color:var(--mint)}
+  .img-status.error{color:#f87171}
+  .img-parse-btn{background:#f5f3ff;border:none;border-radius:8px;padding:6px 12px;font-size:12px;color:#4f46e5;cursor:pointer;font-family:'Noto Sans SC',sans-serif;white-space:nowrap;flex-shrink:0}
+  .img-parse-btn:disabled{opacity:.4;cursor:default}
+
+  /* 解析结果预览 */
+  .parse-result{border-top:1px solid #f3e8ff;padding:10px 12px}
+  .parse-result-title{font-size:11px;color:var(--text-muted);margin-bottom:8px;display:flex;align-items:center;justify-content:space-between}
+  .parse-records{display:flex;flex-direction:column;gap:6px}
+  .parse-record-row{display:flex;align-items:center;gap:8px;padding:6px 8px;background:var(--pink-soft);border-radius:8px}
+  .parse-record-row.skip{opacity:.4;background:#f9fafb;text-decoration:line-through}
+  .parse-record-icon{font-size:16px;flex-shrink:0}
+  .parse-record-body{flex:1;min-width:0}
+  .parse-record-main{font-size:12px;font-weight:500}
+  .parse-record-sub{font-size:11px;color:var(--text-muted)}
+  .parse-record-toggle{background:none;border:none;font-size:16px;cursor:pointer;color:#d1d5db;flex-shrink:0;padding:2px}
+
+  /* 日期确认输入 */
+  .date-confirm{display:flex;align-items:center;gap:8px;padding:8px 12px;background:#fffbeb;border-top:1px solid #fef3c7}
+  .date-confirm label{font-size:12px;color:#92400e;flex-shrink:0}
+  .date-confirm input{flex:1;border:1px solid #fcd34d;border-radius:8px;padding:6px 10px;font-size:13px;background:white;outline:none;font-family:'Noto Sans SC',sans-serif}
+
+  /* 批量导入按钮 */
+  .import-actions{padding:0 16px;margin-top:4px;display:flex;flex-direction:column;gap:10px}
+  .import-summary{font-size:13px;color:var(--text-muted);text-align:center;padding:4px}
+  .btn-import-all{width:100%;background:linear-gradient(135deg,#34d399,#10b981);color:white;border:none;border-radius:var(--radius-sm);padding:16px;font-size:16px;font-family:'Noto Sans SC',sans-serif;font-weight:500;cursor:pointer;box-shadow:0 4px 16px rgba(16,185,129,.3);transition:transform .15s}
+  .btn-import-all:disabled{opacity:.4;cursor:default}
+  .btn-import-all:not(:disabled):active{transform:scale(.97)}
+
   .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-80px);background:#1e1b4b;color:white;padding:10px 20px;border-radius:50px;font-size:13px;z-index:999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap}
   .toast.show{transform:translateX(-50%) translateY(0)}
 </style>
@@ -259,6 +321,7 @@
         <button class="quick-btn" @click="openModal('mood')"><span class="icon">😊</span><span class="label">心情</span></button>
         <button class="quick-btn" @click="openModal('weight')"><span class="icon">⚖️</span><span class="label">体重</span></button>
         <button class="quick-btn" @click="openModal('note')"><span class="icon">📝</span><span class="label">备注</span></button>
+        <button class="quick-btn" @click="openModal('bath')"><span class="icon">🛁</span><span class="label">洗澡</span></button>
       </div>
     </div>
 
@@ -464,6 +527,15 @@
         </div>
       </div>
       <div class="settings-section">
+        <div class="settings-section-title">历史数据导入</div>
+        <div style="background:var(--white);border-radius:var(--radius-sm);padding:16px;box-shadow:var(--card-shadow)">
+          <div style="font-size:13px;color:var(--text-muted);line-height:1.8;margin-bottom:14px">
+            拍照上传手写记录本，AI 自动识别喂奶、便便、睡眠、洗澡等数据，预览确认后批量导入。
+          </div>
+          <button class="btn-import" @click="tab='import'">📷 拍照批量导入</button>
+        </div>
+      </div>
+      <div class="settings-section">
         <div class="settings-section-title">关于</div>
         <div style="background:var(--white);border-radius:var(--radius-sm);padding:16px;box-shadow:var(--card-shadow);font-size:13px;color:var(--text-muted);line-height:2">
           <div>数据存储：Supabase 云端</div>
@@ -620,6 +692,97 @@
       <button class="btn-submit" @click="saveNote">保存记录</button>
     </div>
   </div>
+
+  <!-- 洗澡 -->
+  <div class="modal-overlay" v-if="modal==='bath'" @click.self="closeModal">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title">🛁 记录洗澡</div>
+      <div class="form-group"><label class="form-label">时间</label><input class="form-input" type="time" v-model="bathForm.time"></div>
+      <div class="form-group">
+        <label class="form-label">水温</label>
+        <div class="chip-group">
+          <div v-for="t in ['37°C','38°C','39°C','40°C']" :key="t" class="chip" :class="{selected:bathForm.temp===t}" @click="bathForm.temp=t">{{ t }}</div>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">备注</label><input class="form-input" v-model="bathForm.note" placeholder="例如：洗完抚触、换新沐浴露"></div>
+      <button class="btn-submit" @click="saveBath">保存记录</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════
+       导入 Tab
+  ════════════════════════════════ -->
+  <template v-if="tab==='import'">
+    <div class="import-page">
+      <div class="import-header">
+        <button class="import-back" @click="tab='settings'">← 返回设置</button>
+        <div class="import-title">📷 拍照批量导入</div>
+        <div class="import-subtitle">支持月嫂日志 / 喂养记录表，AI 自动识别</div>
+      </div>
+
+      <div class="import-body">
+        <!-- 上传区 -->
+        <div class="upload-zone" @click="triggerFileInput">
+          <input ref="fileInputRef" type="file" accept="image/*" multiple @change="onFilesSelected">
+          <div class="upload-icon">📸</div>
+          <div class="upload-text">点击选择照片</div>
+          <div class="upload-hint">可同时选多张，支持批量识别</div>
+        </div>
+
+        <!-- 图片队列 -->
+        <div class="img-queue" v-if="importQueue.length>0">
+          <div v-for="(item,idx) in importQueue" :key="item.id" class="img-item">
+            <!-- 日期确认行 -->
+            <div class="date-confirm">
+              <label>📅 日期</label>
+              <input type="date" v-model="item.date">
+            </div>
+            <!-- 图片信息行 -->
+            <div class="img-item-header">
+              <img :src="item.preview" class="img-thumb">
+              <div class="img-info">
+                <div class="img-name">第 {{ idx+1 }} 张</div>
+                <div class="img-status" :class="item.status">{{ statusLabel(item.status) }}</div>
+              </div>
+              <button class="img-parse-btn" @click="parseImage(item)" :disabled="item.status==='parsing'||item.status==='done'">
+                {{ item.status==='done' ? '✅ 已识别' : item.status==='parsing' ? '识别中…' : '识别' }}
+              </button>
+            </div>
+            <!-- 解析结果 -->
+            <div class="parse-result" v-if="item.records&&item.records.length>0">
+              <div class="parse-result-title">
+                <span>识别到 {{ item.records.filter(r=>!r.skip).length }} 条记录</span>
+                <span style="color:#6366f1;cursor:pointer;font-size:11px" @click="selectAll(item)">全选/全不选</span>
+              </div>
+              <div class="parse-records">
+                <div v-for="(r,ri) in item.records" :key="ri" class="parse-record-row" :class="{skip:r.skip}">
+                  <span class="parse-record-icon">{{ typeIcon(r.type) }}</span>
+                  <div class="parse-record-body">
+                    <div class="parse-record-main">{{ typeLabel(r.type) }} · {{ r.timeStr }}</div>
+                    <div class="parse-record-sub">{{ r.detail }}</div>
+                  </div>
+                  <button class="parse-record-toggle" @click="r.skip=!r.skip">{{ r.skip?'＋':'✕' }}</button>
+                </div>
+              </div>
+            </div>
+            <div class="parse-result" v-else-if="item.status==='error'">
+              <div style="font-size:12px;color:#f87171;padding:4px 0">识别失败，请重试或检查图片清晰度</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 底部导入按钮 -->
+      <div class="import-actions" v-if="importQueue.length>0">
+        <div class="import-summary">共 {{ totalParsedCount }} 条待导入记录</div>
+        <button class="btn-import-all" :disabled="totalParsedCount===0||importing" @click="importAll">
+          {{ importing ? '导入中…' : `✅ 确认导入 ${totalParsedCount} 条` }}
+        </button>
+        <button style="width:100%;background:none;border:1px solid #e5e7eb;border-radius:var(--radius-sm);padding:12px;font-size:14px;font-family:'Noto Sans SC',sans-serif;color:var(--text-muted);cursor:pointer" @click="clearQueue">清空队列</button>
+      </div>
+    </div>
+  </template>
 
 </div><!-- /#app -->
 
@@ -809,7 +972,7 @@ createApp({
     const playForm   = ref({items:[],custom:'',duration:'',note:''})
     const moodForm   = ref({mood:'',note:''})
     const weightForm = ref({weight:'',height:'',head:'',note:''})
-    const noteForm   = ref({content:''})
+    const bathForm   = ref({time:nowTime(),temp:'38°C',note:''})
     const foodOptions= ['米粉','蛋黄','南瓜','红薯','胡萝卜','西兰花','豆腐','鱼泥','肉泥','水果泥']
     const playOptions= ['摇铃','积木','绘本','爬行垫','户外','音乐','洗澡','抚触']
 
@@ -930,6 +1093,145 @@ createApp({
       await insertRecord({type:'note',detail:noteForm.value.content.trim(),time:new Date().toISOString(),date:new Date().toISOString().slice(0,10)})
       noteForm.value={content:''}
     }
+    async function saveBath(){
+      const parts=[]
+      if(bathForm.value.temp) parts.push(bathForm.value.temp)
+      if(bathForm.value.note) parts.push(bathForm.value.note)
+      const today=new Date().toISOString().slice(0,10)
+      await insertRecord({type:'bath',detail:parts.join(' · ')||'洗澡',time:`${today}T${bathForm.value.time}:00+08:00`,date:today})
+      bathForm.value={time:nowTime(),temp:'38°C',note:''}
+    }
+
+    // ── 导入功能 ──
+    const importQueue  = ref([])
+    const importing    = ref(false)
+    const fileInputRef = ref(null)
+
+    function triggerFileInput(){ fileInputRef.value?.click() }
+
+    function onFilesSelected(e){
+      const files=[...e.target.files]
+      files.forEach(file=>{
+        const reader=new FileReader()
+        reader.onload=ev=>{
+          importQueue.value.push({
+            id: Date.now()+Math.random(),
+            file,
+            preview: ev.target.result,
+            base64: ev.target.result.split(',')[1],
+            date: new Date().toISOString().slice(0,10),
+            status: 'pending',  // pending|parsing|done|error
+            records: []
+          })
+        }
+        reader.readAsDataURL(file)
+      })
+      e.target.value=''
+    }
+
+    async function parseImage(item){
+      item.status='parsing'
+      try{
+        const resp = await fetch('https://api.anthropic.com/v1/messages',{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({
+            model:'claude-sonnet-4-20250514',
+            max_tokens:2000,
+            messages:[{
+              role:'user',
+              content:[
+                {type:'image',source:{type:'base64',media_type:'image/jpeg',data:item.base64}},
+                {type:'text',text:`你是一个育儿记录助手。请识别这张手写宝宝记录表，提取所有记录数据。
+
+支持两种格式：
+1. 月嫂服务日志：提取喂奶（时间+奶量）、大便时间、洗澡时间
+2. 宝宝喂养记录表：提取喂养（开始时间+结束时间+奶粉量）、大便时间、睡眠记录
+
+请严格只返回JSON数组，不要任何其他文字，格式如下：
+[
+  {"type":"feed","timeStr":"08:40","detail":"配方奶 · 30ml"},
+  {"type":"poop","timeStr":"20:30","detail":"便便一次"},
+  {"type":"sleep","timeStr":"21:00","detail":"睡眠","startTimeStr":"21:00","endTimeStr":"06:00"},
+  {"type":"bath","timeStr":"18:30","detail":"洗澡"}
+]
+
+type只能是：feed/poop/sleep/bath
+timeStr格式：HH:MM（24小时制）
+如果某类数据没有则不输出
+睡眠记录必须有startTimeStr和endTimeStr
+只返回JSON，不要markdown代码块，不要任何说明文字`}
+              ]
+            }]
+          })
+        })
+        const data=await resp.json()
+        const text=data.content?.map(c=>c.text||'').join('')||''
+        // 清理可能的markdown包裹
+        const clean=text.replace(/```json|```/g,'').trim()
+        const parsed=JSON.parse(clean)
+        item.records = parsed.map(r=>({...r,skip:false}))
+        item.status='done'
+      }catch(e){
+        console.error(e)
+        item.status='error'
+      }
+    }
+
+    function selectAll(item){
+      const allSelected = item.records.every(r=>!r.skip)
+      item.records.forEach(r=>{ r.skip=allSelected })
+    }
+
+    function statusLabel(s){
+      return {pending:'等待识别',parsing:'AI识别中…',done:'识别完成',error:'识别失败'}[s]||s
+    }
+
+    const totalParsedCount = computed(()=>
+      importQueue.value.reduce((sum,item)=>sum+item.records.filter(r=>!r.skip).length,0)
+    )
+
+    async function importAll(){
+      if(!recorder.value){showToast('请先在设置中选择身份');return}
+      importing.value=true
+      let successCount=0, failCount=0
+      for(const item of importQueue.value){
+        for(const r of item.records.filter(r=>!r.skip)){
+          try{
+            // 用图片对应日期 + 记录时间拼 ISO
+            const dateStr = item.date
+            // 判断是否跨天（睡眠结束时间可能是次日）
+            let timeIso = `${dateStr}T${r.timeStr}:00+08:00`
+            const row = {
+              type: r.type,
+              detail: r.detail,
+              time: timeIso,
+              date: dateStr,
+              recorder: recorder.value
+            }
+            // 睡眠记录特殊处理
+            if(r.type==='sleep'&&r.startTimeStr&&r.endTimeStr){
+              row.start_time=`${dateStr}T${r.startTimeStr}:00+08:00`
+              // 如果结束时间 < 开始时间，算次日
+              const nextDate=new Date(new Date(dateStr).getTime()+86400000).toISOString().slice(0,10)
+              row.end_time=r.endTimeStr<r.startTimeStr
+                ?`${nextDate}T${r.endTimeStr}:00+08:00`
+                :`${dateStr}T${r.endTimeStr}:00+08:00`
+            }
+            const {error}=await sb.from('records').insert(row)
+            if(error) throw error
+            successCount++
+          }catch(e){ console.error(e); failCount++ }
+        }
+      }
+      // 刷新数据
+      await fetchRecords()
+      importing.value=false
+      showToast(`✅ 导入完成：${successCount}条成功${failCount>0?' '+failCount+'条失败':''}`)
+      if(failCount===0) importQueue.value=[]
+    }
+
+    function clearQueue(){ importQueue.value=[] }
 
     // ── 日记页计算属性 ──
     const isToday = computed(()=>viewDate.value===new Date().toISOString().slice(0,10))
@@ -954,8 +1256,8 @@ createApp({
     const todayPoopCount=computed(()=>todayRecords.value.filter(r=>r.type==='poop').length)
     const todayFoodCount=computed(()=>todayRecords.value.filter(r=>r.type==='food').length)
 
-    function typeIcon(t){ return {sleep:'🌙',feed:'🍼',food:'🥣',poop:'💩',play:'🧸',mood:'😊',weight:'⚖️',note:'📝'}[t]||'📌' }
-    function typeLabel(t){ return {sleep:'睡眠',feed:'喂养',food:'辅食',poop:'便便',play:'游玩',mood:'心情',weight:'生长',note:'备注'}[t]||'记录' }
+    function typeIcon(t){ return {sleep:'🌙',feed:'🍼',food:'🥣',poop:'💩',play:'🧸',mood:'😊',weight:'⚖️',note:'📝',bath:'🛁'}[t]||'📌' }
+    function typeLabel(t){ return {sleep:'睡眠',feed:'喂养',food:'辅食',poop:'便便',play:'游玩',mood:'心情',weight:'生长',note:'备注',bath:'洗澡'}[t]||'记录' }
     function formatHM(iso){ if(!iso) return ''; const d=new Date(iso); return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}` }
 
     onMounted(()=>{ fetchRecords(); subscribeRealtime() })
@@ -968,16 +1270,18 @@ createApp({
       historyType, historyRange, historyFilters, historyRanges, historyRangeLabel,
       historyGrouped, foodAggList, linkedFoods, isPoopAbnormal,
       sleepStartTs, sleepRunning, sleepElapsed, sleepTimerDisplay, sleepStartTimeStr,
-      sleepForm, feedForm, foodForm, poopForm, playForm, moodForm, weightForm, noteForm,
+      sleepForm, feedForm, foodForm, poopForm, playForm, moodForm, weightForm, noteForm, bathForm,
       foodOptions, playOptions,
       openModal, closeModal,
       toggleSleepTimer, resetSleepTimer, stopAndSaveSleep, saveManualSleep,
-      saveFeed, saveFood, savePoop, savePlay, saveMood, saveWeight, saveNote,
+      saveFeed, saveFood, savePoop, savePlay, saveMood, saveWeight, saveNote, saveBath,
       toggleFood, togglePlay, deleteRecord,
       prevDay, nextDay, isToday, viewDateLabel, todayLabel,
       viewRecords, todayRecords,
       todaySleepHours, todayFeedCount, todayFeedTotal, todayPoopCount, todayFoodCount,
-      typeIcon, typeLabel, formatHM
+      typeIcon, typeLabel, formatHM,
+      importQueue, importing, fileInputRef, triggerFileInput, onFilesSelected,
+      parseImage, selectAll, statusLabel, totalParsedCount, importAll, clearQueue
     }
   }
 }).mount('#app')
