@@ -964,6 +964,9 @@ createApp({
       sleepForm.value={manualStart:nowTime(),manualEnd:nowTime(),note:''}
     }
 
+    // ── 工具函数（必须在表单之前）──
+    function nowTime(){ const d=new Date(); return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}` }
+
     // ── 表单 ──
     const sleepForm  = ref({manualStart:nowTime(),manualEnd:nowTime(),note:''})
     const feedForm   = ref({type:'配方奶',amount:'205',duration:'10',time:nowTime(),note:''})
@@ -972,11 +975,11 @@ createApp({
     const playForm   = ref({items:[],custom:'',duration:'',note:''})
     const moodForm   = ref({mood:'',note:''})
     const weightForm = ref({weight:'',height:'',head:'',note:''})
+    const noteForm   = ref({content:''})
     const bathForm   = ref({time:nowTime(),temp:'38°C',note:''})
     const foodOptions= ['米粉','蛋黄','南瓜','红薯','胡萝卜','西兰花','豆腐','鱼泥','肉泥','水果泥']
-    const playOptions= ['摇铃','积木','绘本','爬行垫','户外','音乐','洗澡','抚触']
+    const playOptions= ['摇铃','积木','绘本','爬行垫','户外','音乐','抚触']
 
-    function nowTime(){ const d=new Date(); return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}` }
     function openModal(type){
       if(type==='feed') feedForm.value.time=nowTime()
       if(type==='sleep'){sleepForm.value.manualStart=nowTime();sleepForm.value.manualEnd=nowTime()}
