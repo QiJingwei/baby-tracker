@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#f9a8d4">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="宝宝日记">
+<title>宝宝日记</title>
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink: #f472b6;
+    --pink-light: #fce7f3;
+    --pink-soft: #fdf2f8;
+    --peach: #fb923c;
+    --mint: #34d399;
+    --sky: #38bdf8;
+    --lavender: #a78bfa;
+    --yellow: #fbbf24;
+    --text: #1e1b4b;
+    --text-muted: #6b7280;
+    --white: #ffffff;
+    --card-shadow: 0 4px 24px rgba(244,114,182,0.13);
+    --radius: 20px;
+    --radius-sm: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'Noto Sans SC', sans-serif;
+    background: var(--pink-soft);
+    color: var(--text);
+    min-height: 100dvh;
+    padding-bottom: 80px;
+    overflow-x: hidden;
+  }
+
+  /* ---- 顶部 Header ---- */
+  .header {
+    background: linear-gradient(135deg, #f9a8d4 0%, #fbcfe8 50%, #e9d5ff 100%);
+    padding: 20px 20px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    width: 200px; height: 200px;
+    background: rgba(255,255,255,0.18);
+    border-radius: 50%;
+    top: -60px; right: -40px;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    width: 120px; height: 120px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 50%;
+    bottom: -30px; left: 30px;
+  }
+  .header-content { position: relative; z-index: 1; }
+  .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .baby-name {
+    font-family: 'Ma Shan Zheng', cursive;
+    font-size: 28px;
+    color: #9d174d;
+    text-shadow: 0 1px 2px rgba(255,255,255,0.5);
+  }
+  .header-date {
+    font-size: 12px;
+    color: #be185d;
+    background: rgba(255,255,255,0.5);
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+  .header-stats {
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .stat-chip {
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(8px);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 12px;
+    color: #9d174d;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .stat-chip span { font-size: 16px; }
+
+  /* ---- 快速记录按钮区 ---- */
+  .quick-section {
+    padding: 20px 16px 8px;
+  }
+  .section-title {
+    font-size: 13px;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+    padding-left: 4px;
+  }
+  .quick-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+  .quick-btn {
+    background: var(--white);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 14px 8px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    box-shadow: var(--card-shadow);
+    transition: transform 0.15s, box-shadow 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+  .quick-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+  .quick-btn:active { transform: scale(0.94); }
+  .quick-btn .icon { font-size: 26px; line-height: 1; }
+  .quick-btn .label { font-size: 11px; color: var(--text-muted); font-weight: 500; }
+  .quick-btn.sleep { box-shadow: 0 4px 20px rgba(167,139,250,0.2); }
+  .quick-btn.feed  { box-shadow: 0 4px 20px rgba(251,146,60,0.2); }
+  .quick-btn.food  { box-shadow: 0 4px 20px rgba(52,211,153,0.2); }
+  .quick-btn.poop  { box-shadow: 0 4px 20px rgba(251,191,36,0.2); }
+  .quick-btn.play  { box-shadow: 0 4px 20px rgba(56,189,248,0.2); }
+  .quick-btn.mood  { box-shadow: 0 4px 20px rgba(244,114,182,0.2); }
+  .quick-btn.weight { box-shadow: 0 4px 20px rgba(99,102,241,0.2); }
+  .quick-btn.note  { box-shadow: 0 4px 20px rgba(107,114,128,0.2); }
+
+  /* ---- 时间线 ---- */
+  .timeline-section {
+    padding: 8px 16px;
+  }
+  .timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    padding: 0 4px;
+  }
+  .date-nav { display: flex; align-items: center; gap: 10px; }
+  .date-nav button {
+    background: var(--white);
+    border: none;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: var(--card-shadow);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .date-nav button:active { transform: scale(0.9); }
+  .date-label { font-size: 14px; font-weight: 500; }
+
+  .timeline { display: flex; flex-direction: column; gap: 10px; }
+
+  .record-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    box-shadow: var(--card-shadow);
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    position: relative;
+    animation: slideIn 0.3s ease;
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .record-icon-wrap {
+    width: 44px; height: 44px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .type-sleep .record-icon-wrap { background: #f5f3ff; }
+  .type-feed  .record-icon-wrap { background: #fff7ed; }
+  .type-food  .record-icon-wrap { background: #ecfdf5; }
+  .type-poop  .record-icon-wrap { background: #fffbeb; }
+  .type-play  .record-icon-wrap { background: #f0f9ff; }
+  .type-mood  .record-icon-wrap { background: #fdf2f8; }
+  .type-weight .record-icon-wrap { background: #eef2ff; }
+  .type-note  .record-icon-wrap { background: #f9fafb; }
+
+  .record-body { flex: 1; min-width: 0; }
+  .record-title { font-size: 14px; font-weight: 500; margin-bottom: 3px; }
+  .record-detail { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+  .record-time {
+    font-size: 11px;
+    color: #d1d5db;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .record-delete {
+    position: absolute;
+    top: 10px; right: 12px;
+    background: none;
+    border: none;
+    color: #e5e7eb;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 4px;
+    transition: color 0.2s;
+  }
+  .record-delete:hover { color: #f87171; }
+
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-muted);
+  }
+  .empty-state .emoji { font-size: 48px; margin-bottom: 12px; }
+  .empty-state p { font-size: 14px; }
+
+  /* ---- 底部 Tab 栏 ---- */
+  .tab-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid rgba(244,114,182,0.15);
+    display: flex;
+    padding: 8px 0 max(8px, env(safe-area-inset-bottom));
+    z-index: 100;
+  }
+  .tab-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    cursor: pointer;
+    padding: 4px 0;
+    border: none;
+    background: none;
+    transition: transform 0.15s;
+  }
+  .tab-item:active { transform: scale(0.9); }
+  .tab-item .t-icon { font-size: 22px; }
+  .tab-item .t-label { font-size: 10px; color: #9ca3af; }
+  .tab-item.active .t-label { color: var(--pink); font-weight: 500; }
+  .tab-item.active .t-icon { filter: drop-shadow(0 0 4px rgba(244,114,182,0.6)); }
+
+  /* ---- Modal 弹窗 ---- */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(4px);
+    z-index: 200;
+    display: flex;
+    align-items: flex-end;
+    animation: fadeIn 0.2s ease;
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .modal-sheet {
+    background: var(--white);
+    border-radius: 24px 24px 0 0;
+    width: 100%;
+    padding: 20px 20px max(20px, env(safe-area-inset-bottom));
+    animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    max-height: 85dvh;
+    overflow-y: auto;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
+  }
+
+  .modal-handle {
+    width: 36px; height: 4px;
+    background: #e5e7eb;
+    border-radius: 2px;
+    margin: 0 auto 20px;
+  }
+  .modal-title {
+    font-family: 'Ma Shan Zheng', cursive;
+    font-size: 22px;
+    color: var(--text);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .form-group { margin-bottom: 16px; }
+  .form-label { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; display: block; }
+  .form-input, .form-select, .form-textarea {
+    width: 100%;
+    border: 1.5px solid #f3e8ff;
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    font-size: 15px;
+    font-family: 'Noto Sans SC', sans-serif;
+    color: var(--text);
+    background: var(--pink-soft);
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--pink);
+    background: var(--white);
+  }
+  .form-textarea { resize: none; min-height: 80px; }
+
+  .form-row { display: flex; gap: 10px; }
+  .form-row .form-group { flex: 1; }
+
+  .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    border: 1.5px solid #e5e7eb;
+    background: var(--white);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: var(--text-muted);
+  }
+  .chip.selected {
+    border-color: var(--pink);
+    background: var(--pink-light);
+    color: #9d174d;
+    font-weight: 500;
+  }
+
+  .btn-submit {
+    width: 100%;
+    background: linear-gradient(135deg, #f472b6, #ec4899);
+    color: white;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 16px;
+    font-size: 16px;
+    font-family: 'Noto Sans SC', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 8px;
+    box-shadow: 0 4px 16px rgba(236,72,153,0.35);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .btn-submit:active {
+    transform: scale(0.97);
+    box-shadow: 0 2px 8px rgba(236,72,153,0.25);
+  }
+
+  /* 睡眠计时器 */
+  .sleep-timer {
+    text-align: center;
+    padding: 20px 0;
+  }
+  .sleep-timer .timer-display {
+    font-family: 'Ma Shan Zheng', cursive;
+    font-size: 52px;
+    color: var(--lavender);
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+  .sleep-timer .timer-label { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
+  .timer-btns { display: flex; gap: 10px; justify-content: center; }
+  .timer-btn {
+    padding: 12px 28px;
+    border-radius: 50px;
+    border: none;
+    font-size: 14px;
+    font-family: 'Noto Sans SC', sans-serif;
+    cursor: pointer;
+    font-weight: 500;
+  }
+  .timer-btn.start { background: var(--lavender); color: white; }
+  .timer-btn.stop  { background: #f3f4f6; color: var(--text-muted); }
+
+  /* 统计小卡 */
+  .today-summary {
+    padding: 0 16px 8px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .summary-card {
+    background: var(--white);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    box-shadow: var(--card-shadow);
+  }
+  .summary-card .s-label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
+  .summary-card .s-value { font-size: 20px; font-weight: 600; }
+  .summary-card .s-unit  { font-size: 11px; color: var(--text-muted); margin-left: 2px; }
+  .s-sleep { color: var(--lavender); }
+  .s-feed  { color: var(--peach); }
+  .s-poop  { color: var(--yellow); }
+  .s-food  { color: var(--mint); }
+
+  .toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-80px);
+    background: #1e1b4b;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-size: 13px;
+    z-index: 999;
+    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-content">
+      <div class="header-top">
+        <div class="baby-name">🌸 {{ babyName }} 的日记</div>
+        <div class="header-date">{{ todayLabel }}</div>
+      </div>
+      <div class="header-stats">
+        <div class="stat-chip"><span>🌙</span> 睡了 {{ todaySleepHours }}h</div>
+        <div class="stat-chip"><span>🍼</span> 喂了 {{ todayFeedCount }} 次</div>
+        <div class="stat-chip"><span>💩</span> {{ todayPoopCount }} 次</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 快速记录 -->
+  <div class="quick-section">
+    <div class="section-title">快速记录</div>
+    <div class="quick-grid">
+      <button class="quick-btn sleep" @click="openModal('sleep')">
+        <span class="icon">🌙</span>
+        <span class="label">睡眠</span>
+      </button>
+      <button class="quick-btn feed" @click="openModal('feed')">
+        <span class="icon">🍼</span>
+        <span class="label">喂养</span>
+      </button>
+      <button class="quick-btn food" @click="openModal('food')">
+        <span class="icon">🥣</span>
+        <span class="label">辅食</span>
+      </button>
+      <button class="quick-btn poop" @click="openModal('poop')">
+        <span class="icon">💩</span>
+        <span class="label">便便</span>
+      </button>
+      <button class="quick-btn play" @click="openModal('play')">
+        <span class="icon">🧸</span>
+        <span class="label">游玩</span>
+      </button>
+      <button class="quick-btn mood" @click="openModal('mood')">
+        <span class="icon">😊</span>
+        <span class="label">心情</span>
+      </button>
+      <button class="quick-btn weight" @click="openModal('weight')">
+        <span class="icon">⚖️</span>
+        <span class="label">体重</span>
+      </button>
+      <button class="quick-btn note" @click="openModal('note')">
+        <span class="icon">📝</span>
+        <span class="label">备注</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- 今日汇总 -->
+  <div class="today-summary" v-if="todayRecords.length > 0">
+    <div class="summary-card">
+      <div class="s-label">今日睡眠</div>
+      <div><span class="s-value s-sleep">{{ todaySleepHours }}</span><span class="s-unit">小时</span></div>
+    </div>
+    <div class="summary-card">
+      <div class="s-label">今日喂养</div>
+      <div><span class="s-value s-feed">{{ todayFeedTotal }}</span><span class="s-unit">ml</span></div>
+    </div>
+    <div class="summary-card">
+      <div class="s-label">辅食次数</div>
+      <div><span class="s-value s-food">{{ todayFoodCount }}</span><span class="s-unit">次</span></div>
+    </div>
+    <div class="summary-card">
+      <div class="s-label">便便次数</div>
+      <div><span class="s-value s-poop">{{ todayPoopCount }}</span><span class="s-unit">次</span></div>
+    </div>
+  </div>
+
+  <!-- 时间线 -->
+  <div class="timeline-section">
+    <div class="timeline-header">
+      <div class="section-title" style="margin-bottom:0">记录时间线</div>
+      <div class="date-nav">
+        <button @click="prevDay">◀</button>
+        <span class="date-label">{{ viewDateLabel }}</span>
+        <button @click="nextDay" :disabled="isToday">▶</button>
+      </div>
+    </div>
+
+    <div class="timeline" v-if="viewRecords.length > 0">
+      <div
+        v-for="r in viewRecords"
+        :key="r.id"
+        class="record-card"
+        :class="'type-' + r.type"
+      >
+        <div class="record-icon-wrap">{{ typeIcon(r.type) }}</div>
+        <div class="record-body">
+          <div class="record-title">{{ typeLabel(r.type) }}</div>
+          <div class="record-detail">{{ r.detail }}</div>
+        </div>
+        <div class="record-time">{{ formatTime(r.time) }}</div>
+        <button class="record-delete" @click="deleteRecord(r.id)">×</button>
+      </div>
+    </div>
+    <div class="empty-state" v-else>
+      <div class="emoji">🌱</div>
+      <p>这天还没有记录</p>
+      <p style="margin-top:6px; font-size:12px;">点击上方快速记录开始吧</p>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" :class="{ show: toastVisible }">{{ toastMsg }}</div>
+
+  <!-- 底部 Tab -->
+  <div class="tab-bar">
+    <button class="tab-item active">
+      <span class="t-icon">📖</span>
+      <span class="t-label">日记</span>
+    </button>
+    <button class="tab-item">
+      <span class="t-icon">📊</span>
+      <span class="t-label">统计</span>
+    </button>
+    <button class="tab-item">
+      <span class="t-icon">👶</span>
+      <span class="t-label">宝宝</span>
+    </button>
+    <button class="tab-item">
+      <span class="t-icon">⚙️</span>
+      <span class="t-label">设置</span>
+    </button>
+  </div>
+
+  <!-- ===== 睡眠 Modal ===== -->
+  <div class="modal-overlay" v-if="modal === 'sleep'" @click.self="closeModal">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title">🌙 记录睡眠</div>
+      <div class="sleep-timer">
+        <div class="timer-display">{{ sleepTimerDisplay }}</div>
+        <div class="timer-label">{{ sleepRunning ? '睡着了～' : (sleepStart ? '已记录开始时间' : '点击开始计时') }}</div>
+        <div class="timer-btns">
+          <button class="timer-btn start" @click="toggleSleepTimer">{{ sleepRunning ? '😴 睡醒了' : '💤 开始睡' }}</button>
+          <button class="timer-btn stop" @click="resetSleepTimer" v-if="sleepStart">重置</button>
+        </div>
+      </div>
+      <div class="form-group" style="margin-top:8px">
+        <label class="form-label">或手动输入时长（分钟）</label>
+        <input class="form-input" type="number" v-model="sleepForm.duration" placeholder="例如 90">
+      </div>
+      <div class="form-group">
+        <label class="form-label">备注</label>
+        <input class="form-input" v-model="sleepForm.note" placeholder="例如：午睡，睡得很香">
+      </div>
+      <button class="btn-submit" @click="saveSleep">保存记录</button>
+    </div>
+  </div>
+
+  <!-- ===== 喂养 Modal ===== -->
+  <div class="modal-overlay" v-if="modal === 'feed'" @click.self="closeModal">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title">🍼 记录喂养</div>
+      <div class="form-group">
+        <label class="form-label">喂养方式</label>
+        <div class="chip-group">
+          <div
+            v-for="t in ['母乳', '配方奶', '混合']"
+            :key="t"
+            class="chip"
+            :class="{ selected: feedForm.type === t }"
+            @click="feedForm.type = t"
+          >{{ t }}</div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">喂养量（ml）</label>
+          <input class="form-input" type="number" v-model="feedForm.amount" placeholder="例如 120">
+        </div>
+        <div class="form-group">
+          <label class="form-label">时长（分钟）</label>
+          <input class="form-input" type="number" v-model="feedForm.duration" placeholder="例如 15">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">时间</label>
+        <input class="form-input" type="time" v-model="feedForm.time">
+      </div>
+      <div class="form-group">
+        <label class="form-label">备注</label>
+        <input class="form-input" v-model="feedForm.note" placeholder="例如：喝完打了嗝">
+      </div>
+      <button class="btn-submit" @click="saveFeed">保存记录</button>
+    </div>
+  </div>
+
+  <!-- ===== 辅食 Modal ===== -->
+  <div class="modal-overlay" v-if="modal === 'food'" @click.self="closeModal">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title">🥣 记录辅食</div>
+      <div class="form-group">
+        <label class="form-label">辅食内容（可多选）</label>
+        <div class="chip-group">
+          <div
+            v-for="f in foodOptions"
+            :key="f"
+            class="chip"
+            :class="{ selected: foodForm.items.includes(f) }"
+            @click="toggleFood(f)"
+          >{{ f }}</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">其他（手动输入）</label>
+        <input class="form-input" v-model="foodForm.custom" placeholder="例如：南瓜泥、豆腐">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">总量（g/ml）</label>
+          <input class="form-input" type="number" v-model="foodForm.amount" placeholder="例如 50">
+        </div>
+        <div class="form-group">
+          <label class="form-label">接受程度</label>
+          <select class="form-select" v-model="foodForm.reaction">
+            <option value="">选择</option>
+            <option>很喜欢 😍</option>
+            <option>还行 😐</option>
+            <option>不喜欢 😣</option>
+            <option>过敏反应 ⚠️</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">备注</label>
+        <input class="form-input" v-model="foodForm.note" placeholder="例如：第一次吃蛋黄">
+      </div>
+      <button class="btn-submit" @click="saveFood">保存记录</button>
+    </div>
+  </div>
+
+  <!-- ===== 便便 Modal ===== -->
+  <div class="modal-overlay" v-if="modal === 'poop'" @click.self="closeModal">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title">💩 记录便便</div>
+      <div class="form-group">
+        <label class="form-label">颜色</label>
+        <div class="chip-group">
+          <div v-for="c in ['黄色', '绿色', '棕色', '黑色', '红色']" :key="c" class="chip" :class="{ selected: poopForm.color === c }" @click="poopForm.color = c">{{ c }}</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">性状</label>
+        <div class="chip-group">
+          <div v-for="t in ['稀水样', '糊状', '软便', '成形', '硬结']" :key="t" class="chip" :class="{ selected: poopForm.texture === t }" @click="poopForm.texture = t">{{ t }}</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">量</label>
+        <div class="chip-group">
+          <div v-for="a in ['少量', '正常', '较多']" :key="a" class="chip" :class="{ selected: poopForm.amount === a }" @click="poopForm.amount = a">{{ a }}</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">备注</label>
+        <input class="form-input" v-model="poopForm.note" placeholder="例如：有血丝，需观察">
+      </div>
+      <button class="btn-submit" @click="savePoop">保存记录</button>
+    </div>
+  </div>
+
+  <!-- ===== 游玩 Modal ===== -->
+  <div class="modal-overlay" v-if="modal === 'play'" @click.self="closeModal">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title">🧸 记录游玩</div>
+      <div class="form-group">
+        <label class="form-label">玩了什么</label>
+        <div class="chip-group">
+          <div v-for="p in playOptions" :key="p" class="chip" :class="{ selected: playForm.items.includes(p) }" @click="togglePlay(p)">{{ p }}</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">其他</label>
+        <input class="form-input" v-model="playForm.custom" placeholder="例如：玩积木、读绘本">
+      </div>
+      <div class="form-group">
+        <label class="form-label">时长（分钟）</label>
+        <input class="form-input" type="number" v-model="playForm.duration" placeholder="例如 30">
+      </div>
+      <div class="form-group">
+        <label class="form-label">备注</label>
+        <input class="form-input" v-model="playForm.note" placeholder="例如：第一次会抓摇铃">
+      </div>
+      <button class="btn-submit" @click="savePlay">保存记录</button>
+    </div>
+  </div>
+
+  <!-- ===== 心情 Modal ===== -->
+  <div class="modal-overlay" v-if="modal === 'mood'" @click.self="closeModal">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title">😊 记录心情</div>
+      <div class="form-group">
+        <label class="form-label">今天宝宝心情</label>
+        <div class="chip-group">
+          <div v-for="m in ['😄 超开心', '😊 不错', '😐 一般', '😢 哭闹', '😴 困']" :key="m" class="chip" :class="{ selected: moodForm.mood === m }" @click="moodForm.mood = m" style="font-size:15px">{{ m }}</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">备注</label>
+        <textarea class="form-textarea" v-model="moodForm.note" placeholder="记录今天的精彩瞬间..."></textarea>
+      </div>
+      <button class="btn-submit" @click="saveMood">保存记录</button>
+    </div>
+  </div>
+
+  <!-- ===== 体重 Modal ===== -->
+  <div class="modal-overlay" v-if="modal === 'weight'" @click.self="closeModal">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title">⚖️ 记录体重身高</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">体重（kg）</label>
+          <input class="form-input" type="number" step="0.01" v-model="weightForm.weight" placeholder="例如 6.5">
+        </div>
+        <div class="form-group">
+          <label class="form-label">身长（cm）</label>
+          <input class="form-input" type="number" step="0.1" v-model="weightForm.height" placeholder="例如 65">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">头围（cm）</label>
+        <input class="form-input" type="number" step="0.1" v-model="weightForm.head" placeholder="例如 42">
+      </div>
+      <div class="form-group">
+        <label class="form-label">备注</label>
+        <input class="form-input" v-model="weightForm.note" placeholder="例如：3个月体检">
+      </div>
+      <button class="btn-submit" @click="saveWeight">保存记录</button>
+    </div>
+  </div>
+
+  <!-- ===== 备注 Modal ===== -->
+  <div class="modal-overlay" v-if="modal === 'note'" @click.self="closeModal">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title">📝 添加备注</div>
+      <div class="form-group">
+        <label class="form-label">内容</label>
+        <textarea class="form-textarea" v-model="noteForm.content" placeholder="记录任何你想记的事情..." style="min-height:120px"></textarea>
+      </div>
+      <button class="btn-submit" @click="saveNote">保存记录</button>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script>
+const { createApp, ref, computed, onMounted, onUnmounted } = Vue
+
+createApp({
+  setup() {
+    const babyName = ref('小团子')
+    const records = ref(JSON.parse(localStorage.getItem('baby_records') || '[]'))
+    const modal = ref(null)
+    const viewDate = ref(new Date().toISOString().slice(0, 10))
+    const toastVisible = ref(false)
+    const toastMsg = ref('')
+
+    // 睡眠计时器
+    const sleepStart = ref(null)
+    const sleepRunning = ref(false)
+    const sleepElapsed = ref(0)
+    let sleepInterval = null
+
+    const sleepTimerDisplay = computed(() => {
+      const s = sleepElapsed.value
+      const h = Math.floor(s / 3600)
+      const m = Math.floor((s % 3600) / 60)
+      const sec = s % 60
+      return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`
+    })
+
+    function toggleSleepTimer() {
+      if (!sleepRunning.value) {
+        sleepStart.value = new Date()
+        sleepRunning.value = true
+        sleepInterval = setInterval(() => { sleepElapsed.value++ }, 1000)
+      } else {
+        clearInterval(sleepInterval)
+        sleepRunning.value = false
+        sleepForm.value.duration = Math.round(sleepElapsed.value / 60)
+      }
+    }
+    function resetSleepTimer() {
+      clearInterval(sleepInterval)
+      sleepRunning.value = false
+      sleepStart.value = null
+      sleepElapsed.value = 0
+      sleepForm.value.duration = ''
+    }
+
+    // 表单数据
+    const sleepForm = ref({ duration: '', note: '' })
+    const feedForm = ref({ type: '母乳', amount: '', duration: '', time: nowTime(), note: '' })
+    const foodForm = ref({ items: [], custom: '', amount: '', reaction: '', note: '' })
+    const poopForm = ref({ color: '', texture: '', amount: '', note: '' })
+    const playForm = ref({ items: [], custom: '', duration: '', note: '' })
+    const moodForm = ref({ mood: '', note: '' })
+    const weightForm = ref({ weight: '', height: '', head: '', note: '' })
+    const noteForm = ref({ content: '' })
+
+    const foodOptions = ['米粉', '蛋黄', '南瓜', '红薯', '胡萝卜', '西兰花', '豆腐', '鱼泥', '肉泥', '水果泥']
+    const playOptions = ['摇铃', '积木', '绘本', '爬行垫', '户外', '音乐', '洗澡', '抚触']
+
+    function nowTime() {
+      const d = new Date()
+      return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`
+    }
+
+    function openModal(type) {
+      if (type === 'feed') feedForm.value.time = nowTime()
+      modal.value = type
+    }
+    function closeModal() {
+      if (sleepRunning.value) { clearInterval(sleepInterval); sleepRunning.value = false }
+      modal.value = null
+    }
+
+    function showToast(msg) {
+      toastMsg.value = msg
+      toastVisible.value = true
+      setTimeout(() => { toastVisible.value = false }, 2000)
+    }
+
+    function addRecord(type, detail) {
+      const r = {
+        id: Date.now(),
+        type,
+        detail,
+        time: new Date().toISOString(),
+        date: new Date().toISOString().slice(0, 10)
+      }
+      records.value.unshift(r)
+      localStorage.setItem('baby_records', JSON.stringify(records.value))
+      closeModal()
+      showToast('✅ 记录成功！')
+    }
+
+    function saveSleep() {
+      const mins = sleepElapsed.value > 0 ? Math.round(sleepElapsed.value / 60) : sleepForm.value.duration
+      if (!mins) { showToast('请输入睡眠时长'); return }
+      const h = Math.floor(mins / 60), m = mins % 60
+      const dur = h > 0 ? `${h}小时${m > 0 ? m+'分钟' : ''}` : `${m}分钟`
+      addRecord('sleep', `睡了 ${dur}${sleepForm.value.note ? ' · ' + sleepForm.value.note : ''}`)
+      resetSleepTimer()
+      sleepForm.value = { duration: '', note: '' }
+    }
+
+    function saveFeed() {
+      const parts = [feedForm.value.type]
+      if (feedForm.value.amount) parts.push(feedForm.value.amount + 'ml')
+      if (feedForm.value.duration) parts.push(feedForm.value.duration + '分钟')
+      if (feedForm.value.note) parts.push(feedForm.value.note)
+      addRecord('feed', parts.join(' · '))
+      feedForm.value = { type: '母乳', amount: '', duration: '', time: nowTime(), note: '' }
+    }
+
+    function toggleFood(f) {
+      const i = foodForm.value.items.indexOf(f)
+      if (i >= 0) foodForm.value.items.splice(i, 1)
+      else foodForm.value.items.push(f)
+    }
+
+    function saveFood() {
+      const items = [...foodForm.value.items]
+      if (foodForm.value.custom) items.push(...foodForm.value.custom.split('、').map(s=>s.trim()).filter(Boolean))
+      if (!items.length) { showToast('请选择辅食内容'); return }
+      const parts = [items.join('、')]
+      if (foodForm.value.amount) parts.push(foodForm.value.amount + 'g')
+      if (foodForm.value.reaction) parts.push(foodForm.value.reaction)
+      if (foodForm.value.note) parts.push(foodForm.value.note)
+      addRecord('food', parts.join(' · '))
+      foodForm.value = { items: [], custom: '', amount: '', reaction: '', note: '' }
+    }
+
+    function savePoop() {
+      const parts = []
+      if (poopForm.value.color) parts.push(poopForm.value.color)
+      if (poopForm.value.texture) parts.push(poopForm.value.texture)
+      if (poopForm.value.amount) parts.push(poopForm.value.amount)
+      if (poopForm.value.note) parts.push(poopForm.value.note)
+      addRecord('poop', parts.length ? parts.join(' · ') : '便便一次')
+      poopForm.value = { color: '', texture: '', amount: '', note: '' }
+    }
+
+    function togglePlay(p) {
+      const i = playForm.value.items.indexOf(p)
+      if (i >= 0) playForm.value.items.splice(i, 1)
+      else playForm.value.items.push(p)
+    }
+
+    function savePlay() {
+      const items = [...playForm.value.items]
+      if (playForm.value.custom) items.push(...playForm.value.custom.split('、').map(s=>s.trim()).filter(Boolean))
+      if (!items.length && !playForm.value.duration) { showToast('请填写游玩内容'); return }
+      const parts = items.length ? [items.join('、')] : []
+      if (playForm.value.duration) parts.push(playForm.value.duration + '分钟')
+      if (playForm.value.note) parts.push(playForm.value.note)
+      addRecord('play', parts.join(' · ') || '玩耍')
+      playForm.value = { items: [], custom: '', duration: '', note: '' }
+    }
+
+    function saveMood() {
+      if (!moodForm.value.mood) { showToast('请选择心情'); return }
+      const parts = [moodForm.value.mood]
+      if (moodForm.value.note) parts.push(moodForm.value.note)
+      addRecord('mood', parts.join(' · '))
+      moodForm.value = { mood: '', note: '' }
+    }
+
+    function saveWeight() {
+      const parts = []
+      if (weightForm.value.weight) parts.push('体重 ' + weightForm.value.weight + 'kg')
+      if (weightForm.value.height) parts.push('身长 ' + weightForm.value.height + 'cm')
+      if (weightForm.value.head) parts.push('头围 ' + weightForm.value.head + 'cm')
+      if (weightForm.value.note) parts.push(weightForm.value.note)
+      if (!parts.length) { showToast('请至少填写一项'); return }
+      addRecord('weight', parts.join(' · '))
+      weightForm.value = { weight: '', height: '', head: '', note: '' }
+    }
+
+    function saveNote() {
+      if (!noteForm.value.content.trim()) { showToast('请输入备注内容'); return }
+      addRecord('note', noteForm.value.content.trim())
+      noteForm.value = { content: '' }
+    }
+
+    function deleteRecord(id) {
+      records.value = records.value.filter(r => r.id !== id)
+      localStorage.setItem('baby_records', JSON.stringify(records.value))
+      showToast('已删除')
+    }
+
+    // 日期导航
+    const isToday = computed(() => viewDate.value === new Date().toISOString().slice(0,10))
+    const viewDateLabel = computed(() => {
+      if (isToday.value) return '今天'
+      const d = new Date(viewDate.value + 'T00:00:00')
+      return `${d.getMonth()+1}月${d.getDate()}日`
+    })
+    const todayLabel = computed(() => {
+      const d = new Date()
+      const weeks = ['日','一','二','三','四','五','六']
+      return `${d.getMonth()+1}月${d.getDate()}日 周${weeks[d.getDay()]}`
+    })
+
+    function prevDay() {
+      const d = new Date(viewDate.value + 'T00:00:00')
+      d.setDate(d.getDate() - 1)
+      viewDate.value = d.toISOString().slice(0,10)
+    }
+    function nextDay() {
+      if (isToday.value) return
+      const d = new Date(viewDate.value + 'T00:00:00')
+      d.setDate(d.getDate() + 1)
+      viewDate.value = d.toISOString().slice(0,10)
+    }
+
+    const viewRecords = computed(() =>
+      records.value.filter(r => r.date === viewDate.value)
+        .sort((a,b) => new Date(b.time) - new Date(a.time))
+    )
+    const todayRecords = computed(() =>
+      records.value.filter(r => r.date === new Date().toISOString().slice(0,10))
+    )
+
+    // 今日统计
+    const todaySleepHours = computed(() => {
+      const sleepRecs = todayRecords.value.filter(r => r.type === 'sleep')
+      let total = 0
+      sleepRecs.forEach(r => {
+        const m = r.detail.match(/(\d+)小时/)
+        const mm = r.detail.match(/(\d+)分钟/)
+        if (m) total += parseInt(m[1]) * 60
+        if (mm) total += parseInt(mm[1])
+      })
+      return total > 0 ? (total / 60).toFixed(1) : 0
+    })
+    const todayFeedCount = computed(() => todayRecords.value.filter(r => r.type === 'feed').length)
+    const todayFeedTotal = computed(() => {
+      let total = 0
+      todayRecords.value.filter(r => r.type === 'feed').forEach(r => {
+        const m = r.detail.match(/(\d+)ml/)
+        if (m) total += parseInt(m[1])
+      })
+      return total
+    })
+    const todayPoopCount = computed(() => todayRecords.value.filter(r => r.type === 'poop').length)
+    const todayFoodCount = computed(() => todayRecords.value.filter(r => r.type === 'food').length)
+
+    function typeIcon(t) {
+      return { sleep:'🌙', feed:'🍼', food:'🥣', poop:'💩', play:'🧸', mood:'😊', weight:'⚖️', note:'📝' }[t] || '📌'
+    }
+    function typeLabel(t) {
+      return { sleep:'睡眠记录', feed:'喂养记录', food:'辅食记录', poop:'便便记录', play:'游玩记录', mood:'心情记录', weight:'生长记录', note:'备注' }[t] || '记录'
+    }
+    function formatTime(iso) {
+      const d = new Date(iso)
+      return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`
+    }
+
+    onUnmounted(() => { if (sleepInterval) clearInterval(sleepInterval) })
+
+    return {
+      babyName, records, modal, viewDate, toastVisible, toastMsg,
+      sleepStart, sleepRunning, sleepElapsed, sleepTimerDisplay,
+      sleepForm, feedForm, foodForm, poopForm, playForm, moodForm, weightForm, noteForm,
+      foodOptions, playOptions,
+      openModal, closeModal, showToast,
+      saveSleep, saveFeed, saveFood, savePoop, savePlay, saveMood, saveWeight, saveNote,
+      toggleFood, togglePlay, toggleSleepTimer, resetSleepTimer,
+      deleteRecord, prevDay, nextDay,
+      isToday, viewDateLabel, todayLabel, viewRecords, todayRecords,
+      todaySleepHours, todayFeedCount, todayFeedTotal, todayPoopCount, todayFoodCount,
+      typeIcon, typeLabel, formatTime
+    }
+  }
+}).mount('#app')
+</script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{
+  "name": "宝宝日记",
+  "short_name": "宝宝日记",
+  "description": "记录宝宝每天的成长点滴",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fdf2f8",
+  "theme_color": "#f9a8d4",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://api.dicebear.com/7.x/fun-emoji/svg?seed=baby&backgroundColor=f9a8d4",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://api.dicebear.com/7.x/fun-emoji/svg?seed=baby&backgroundColor=f9a8d4",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
