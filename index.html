@@ -527,6 +527,17 @@
         </div>
       </div>
       <div class="settings-section">
+        <div class="settings-section-title">AI 识别设置</div>
+        <div style="background:var(--white);border-radius:var(--radius-sm);padding:16px;box-shadow:var(--card-shadow)">
+          <div style="font-size:13px;color:var(--text-muted);margin-bottom:10px">DeepSeek API Key，用于拍照批量导入识别</div>
+          <div style="display:flex;gap:8px">
+            <input class="form-input" type="password" v-model="deepseekKey" placeholder="sk-..." style="flex:1;margin:0">
+            <button @click="saveDeepseekKey" style="background:var(--pink);color:white;border:none;border-radius:var(--radius-sm);padding:0 16px;font-size:14px;font-family:'Noto Sans SC',sans-serif;cursor:pointer;white-space:nowrap">保存</button>
+          </div>
+          <div v-if="deepseekKey" style="margin-top:8px;font-size:12px;color:var(--mint)">✅ 已配置</div>
+        </div>
+      </div>
+      <div class="settings-section">
         <div class="settings-section-title">历史数据导入</div>
         <div style="background:var(--white);border-radius:var(--radius-sm);padding:16px;box-shadow:var(--card-shadow)">
           <div style="font-size:13px;color:var(--text-muted);line-height:1.8;margin-bottom:14px">
@@ -1109,6 +1120,8 @@ createApp({
     const importQueue  = ref([])
     const importing    = ref(false)
     const fileInputRef = ref(null)
+    const deepseekKey  = ref(localStorage.getItem('deepseek_key')||'')
+    function saveDeepseekKey(){ localStorage.setItem('deepseek_key', deepseekKey.value.trim()); showToast('✅ API Key 已保存') }
 
     function triggerFileInput(){ fileInputRef.value?.click() }
 
@@ -1133,18 +1146,22 @@ createApp({
     }
 
     async function parseImage(item){
-      item.status='parsing'
+      const key = deepseekKey.value.trim()
+      if (!key){ showToast('请先在设置中填写 DeepSeek API Key'); return }
+      const idx = importQueue.value.findIndex(i=>i.id===item.id)
+      if (idx<0) return
+      importQueue.value.splice(idx, 1, {...importQueue.value[idx], status:'parsing'})
       try{
-        const resp = await fetch('https://api.anthropic.com/v1/messages',{
+        const resp = await fetch('https://api.deepseek.com/chat/completions',{
           method:'POST',
-          headers:{'Content-Type':'application/json'},
+          headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`},
           body: JSON.stringify({
-            model:'claude-sonnet-4-20250514',
+            model:'deepseek-chat',
             max_tokens:2000,
             messages:[{
               role:'user',
               content:[
-                {type:'image',source:{type:'base64',media_type:'image/jpeg',data:item.base64}},
+                {type:'image_url',image_url:{url:`data:image/jpeg;base64,${importQueue.value[idx].base64}`}},
                 {type:'text',text:`你是一个育儿记录助手。请识别这张手写宝宝记录表，提取所有记录数据。
 
 支持两种格式：
@@ -1169,21 +1186,22 @@ timeStr格式：HH:MM（24小时制）
           })
         })
         const data=await resp.json()
-        const text=data.content?.map(c=>c.text||'').join('')||''
-        // 清理可能的markdown包裹
+        const text=data.choices?.[0]?.message?.content||''
         const clean=text.replace(/```json|```/g,'').trim()
         const parsed=JSON.parse(clean)
-        item.records = parsed.map(r=>({...r,skip:false}))
-        item.status='done'
+        importQueue.value.splice(idx, 1, {...importQueue.value[idx], status:'done', records:parsed.map(r=>({...r,skip:false}))})
       }catch(e){
         console.error(e)
-        item.status='error'
+        importQueue.value.splice(idx, 1, {...importQueue.value[idx], status:'error'})
       }
     }
 
     function selectAll(item){
+      const idx = importQueue.value.findIndex(i=>i.id===item.id)
+      if (idx<0) return
       const allSelected = item.records.every(r=>!r.skip)
-      item.records.forEach(r=>{ r.skip=allSelected })
+      const newRecords = item.records.map(r=>({...r, skip:allSelected}))
+      importQueue.value.splice(idx, 1, {...importQueue.value[idx], records:newRecords})
     }
 
     function statusLabel(s){
@@ -1284,7 +1302,8 @@ timeStr格式：HH:MM（24小时制）
       todaySleepHours, todayFeedCount, todayFeedTotal, todayPoopCount, todayFoodCount,
       typeIcon, typeLabel, formatHM,
       importQueue, importing, fileInputRef, triggerFileInput, onFilesSelected,
-      parseImage, selectAll, statusLabel, totalParsedCount, importAll, clearQueue
+      parseImage, selectAll, statusLabel, totalParsedCount, importAll, clearQueue,
+      deepseekKey, saveDeepseekKey
     }
   }
 }).mount('#app')
