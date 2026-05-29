@@ -14,246 +14,211 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root {
-    --pink: #f472b6;
-    --pink-light: #fce7f3;
-    --pink-soft: #fdf2f8;
-    --peach: #fb923c;
-    --mint: #34d399;
-    --sky: #38bdf8;
-    --lavender: #a78bfa;
-    --yellow: #fbbf24;
-    --text: #1e1b4b;
-    --text-muted: #6b7280;
-    --white: #ffffff;
-    --card-shadow: 0 4px 24px rgba(244,114,182,0.13);
-    --radius: 20px;
-    --radius-sm: 12px;
+    --pink:#f472b6;--pink-light:#fce7f3;--pink-soft:#fdf2f8;
+    --peach:#fb923c;--mint:#34d399;--sky:#38bdf8;
+    --lavender:#a78bfa;--yellow:#fbbf24;
+    --text:#1e1b4b;--text-muted:#6b7280;--white:#ffffff;
+    --card-shadow:0 4px 24px rgba(244,114,182,0.13);
+    --radius:20px;--radius-sm:12px;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  body {
-    font-family: 'Noto Sans SC', sans-serif;
-    background: var(--pink-soft);
-    color: var(--text);
-    min-height: 100dvh;
-    padding-bottom: 80px;
-    overflow-x: hidden;
-  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  body{font-family:'Noto Sans SC',sans-serif;background:var(--pink-soft);color:var(--text);min-height:100dvh;padding-bottom:80px;overflow-x:hidden}
 
-  /* Header */
-  .header {
-    background: linear-gradient(135deg, #f9a8d4 0%, #fbcfe8 50%, #e9d5ff 100%);
-    padding: 20px 20px 28px;
-    position: relative;
-    overflow: hidden;
-  }
-  .header::before {
-    content: ''; position: absolute;
-    width: 200px; height: 200px;
-    background: rgba(255,255,255,0.18); border-radius: 50%;
-    top: -60px; right: -40px;
-  }
-  .header::after {
-    content: ''; position: absolute;
-    width: 120px; height: 120px;
-    background: rgba(255,255,255,0.12); border-radius: 50%;
-    bottom: -30px; left: 30px;
-  }
-  .header-content { position: relative; z-index: 1; }
-  .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-  .baby-name { font-family: 'Ma Shan Zheng', cursive; font-size: 28px; color: #9d174d; text-shadow: 0 1px 2px rgba(255,255,255,0.5); }
-  .header-date { font-size: 12px; color: #be185d; background: rgba(255,255,255,0.5); padding: 4px 10px; border-radius: 20px; }
-  .header-stats { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
-  .stat-chip {
-    background: rgba(255,255,255,0.6); backdrop-filter: blur(8px);
-    border-radius: 20px; padding: 5px 12px;
-    font-size: 12px; color: #9d174d;
-    display: flex; align-items: center; gap: 4px;
-  }
+  /* ── Header ── */
+  .header{background:linear-gradient(135deg,#f9a8d4 0%,#fbcfe8 50%,#e9d5ff 100%);padding:20px 20px 28px;position:relative;overflow:hidden}
+  .header::before{content:'';position:absolute;width:200px;height:200px;background:rgba(255,255,255,.18);border-radius:50%;top:-60px;right:-40px}
+  .header::after{content:'';position:absolute;width:120px;height:120px;background:rgba(255,255,255,.12);border-radius:50%;bottom:-30px;left:30px}
+  .header-content{position:relative;z-index:1}
+  .header-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .baby-name{font-family:'Ma Shan Zheng',cursive;font-size:28px;color:#9d174d;text-shadow:0 1px 2px rgba(255,255,255,.5)}
+  .header-date{font-size:12px;color:#be185d;background:rgba(255,255,255,.5);padding:4px 10px;border-radius:20px}
+  .header-stats{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+  .stat-chip{background:rgba(255,255,255,.6);backdrop-filter:blur(8px);border-radius:20px;padding:5px 12px;font-size:12px;color:#9d174d;display:flex;align-items:center;gap:4px}
 
-  /* 身份标签 */
-  .recorder-badge {
-    display: inline-flex; align-items: center; gap: 4px;
-    font-size: 11px; padding: 3px 8px; border-radius: 10px;
-    font-weight: 500; flex-shrink: 0;
-  }
-  .rb-爸爸 { background: #dbeafe; color: #1d4ed8; }
-  .rb-妈妈 { background: #fce7f3; color: #be185d; }
-  .rb-爷爷 { background: #dcfce7; color: #15803d; }
-  .rb-奶奶 { background: #fff7ed; color: #c2410c; }
+  /* ── 睡眠横幅 ── */
+  .sleep-banner{background:linear-gradient(135deg,#ede9fe,#ddd6fe);border-bottom:1px solid #c4b5fd;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .sleep-banner-left{display:flex;align-items:center;gap:8px}
+  .sleep-banner-dot{width:8px;height:8px;background:#7c3aed;border-radius:50%;animation:pulse 1.5s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+  .sleep-banner-text{font-size:13px;color:#5b21b6}
+  .sleep-banner-time{font-size:16px;font-weight:600;color:#5b21b6;font-variant-numeric:tabular-nums}
+  .sleep-banner-btn{background:#7c3aed;color:white;border:none;border-radius:20px;padding:7px 16px;font-size:13px;font-family:'Noto Sans SC',sans-serif;cursor:pointer;white-space:nowrap}
 
-  /* 睡眠横幅 */
-  .sleep-banner {
-    background: linear-gradient(135deg, #ede9fe, #ddd6fe);
-    border-bottom: 1px solid #c4b5fd;
-    padding: 10px 16px;
-    display: flex; align-items: center; justify-content: space-between; gap: 10px;
-  }
-  .sleep-banner-left { display: flex; align-items: center; gap: 8px; }
-  .sleep-banner-dot { width: 8px; height: 8px; background: #7c3aed; border-radius: 50%; animation: pulse 1.5s ease-in-out infinite; }
-  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(.8)} }
-  .sleep-banner-text { font-size: 13px; color: #5b21b6; }
-  .sleep-banner-time { font-size: 16px; font-weight: 600; color: #5b21b6; font-variant-numeric: tabular-nums; }
-  .sleep-banner-btn { background: #7c3aed; color: white; border: none; border-radius: 20px; padding: 7px 16px; font-size: 13px; font-family: 'Noto Sans SC', sans-serif; cursor: pointer; white-space: nowrap; }
+  /* ── 快捷按钮 ── */
+  .quick-section{padding:20px 16px 8px}
+  .section-title{font-size:13px;color:var(--text-muted);letter-spacing:.5px;margin-bottom:12px;padding-left:4px}
+  .quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .quick-btn{background:var(--white);border:none;border-radius:var(--radius-sm);padding:14px 8px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:var(--card-shadow);transition:transform .15s}
+  .quick-btn:active{transform:scale(.94)}
+  .quick-btn .icon{font-size:26px;line-height:1}
+  .quick-btn .label{font-size:11px;color:var(--text-muted);font-weight:500}
+  .quick-btn.sleep-active{background:#f5f3ff}
+  .quick-btn.sleep-active .label{color:#7c3aed;font-weight:600}
 
-  /* 快捷按钮 */
-  .quick-section { padding: 20px 16px 8px; }
-  .section-title { font-size: 13px; color: var(--text-muted); letter-spacing: .5px; margin-bottom: 12px; padding-left: 4px; }
-  .quick-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
-  .quick-btn {
-    background: var(--white); border: none; border-radius: var(--radius-sm);
-    padding: 14px 8px; cursor: pointer;
-    display: flex; flex-direction: column; align-items: center; gap: 6px;
-    box-shadow: var(--card-shadow); transition: transform .15s;
-  }
-  .quick-btn:active { transform: scale(.94); }
-  .quick-btn .icon { font-size: 26px; line-height: 1; }
-  .quick-btn .label { font-size: 11px; color: var(--text-muted); font-weight: 500; }
-  .quick-btn.sleep-active { background: #f5f3ff; }
-  .quick-btn.sleep-active .label { color: #7c3aed; font-weight: 600; }
+  /* ── 今日汇总 ── */
+  .today-summary{padding:0 16px 8px;display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  .summary-card{background:var(--white);border-radius:var(--radius-sm);padding:14px;box-shadow:var(--card-shadow)}
+  .summary-card .s-label{font-size:11px;color:var(--text-muted);margin-bottom:4px}
+  .summary-card .s-value{font-size:20px;font-weight:600}
+  .summary-card .s-unit{font-size:11px;color:var(--text-muted);margin-left:2px}
+  .s-sleep{color:var(--lavender)}.s-feed{color:var(--peach)}.s-poop{color:var(--yellow)}.s-food{color:var(--mint)}
 
-  /* 今日汇总 */
-  .today-summary { padding: 0 16px 8px; display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; }
-  .summary-card { background: var(--white); border-radius: var(--radius-sm); padding: 14px; box-shadow: var(--card-shadow); }
-  .summary-card .s-label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
-  .summary-card .s-value { font-size: 20px; font-weight: 600; }
-  .summary-card .s-unit  { font-size: 11px; color: var(--text-muted); margin-left: 2px; }
-  .s-sleep{color:var(--lavender)} .s-feed{color:var(--peach)} .s-poop{color:var(--yellow)} .s-food{color:var(--mint)}
+  /* ── 时间线（日记页）── */
+  .timeline-section{padding:8px 16px}
+  .timeline-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding:0 4px}
+  .date-nav{display:flex;align-items:center;gap:10px}
+  .date-nav button{background:var(--white);border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:14px;box-shadow:var(--card-shadow);display:flex;align-items:center;justify-content:center}
+  .date-nav button:disabled{opacity:.35;cursor:default}
+  .date-nav button:not(:disabled):active{transform:scale(.9)}
+  .date-label{font-size:14px;font-weight:500}
+  .timeline{display:flex;flex-direction:column;gap:10px}
 
-  /* 时间线 */
-  .timeline-section { padding: 8px 16px; }
-  .timeline-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; padding: 0 4px; }
-  .date-nav { display: flex; align-items: center; gap: 10px; }
-  .date-nav button { background: var(--white); border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 14px; box-shadow: var(--card-shadow); display: flex; align-items: center; justify-content: center; }
-  .date-nav button:disabled { opacity: .35; cursor: default; }
-  .date-nav button:not(:disabled):active { transform: scale(.9); }
-  .date-label { font-size: 14px; font-weight: 500; }
-  .timeline { display: flex; flex-direction: column; gap: 10px; }
+  /* ── 记录卡 ── */
+  .record-card{background:var(--white);border-radius:var(--radius);padding:12px 14px;box-shadow:var(--card-shadow);display:flex;align-items:flex-start;gap:12px;position:relative;animation:slideIn .25s ease}
+  @keyframes slideIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+  .record-icon-wrap{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+  .type-sleep .record-icon-wrap{background:#f5f3ff}.type-feed .record-icon-wrap{background:#fff7ed}
+  .type-food .record-icon-wrap{background:#ecfdf5}.type-poop .record-icon-wrap{background:#fffbeb}
+  .type-play .record-icon-wrap{background:#f0f9ff}.type-mood .record-icon-wrap{background:#fdf2f8}
+  .type-weight .record-icon-wrap{background:#eef2ff}.type-note .record-icon-wrap{background:#f9fafb}
+  .record-body{flex:1;min-width:0}
+  .record-title{font-size:13px;font-weight:500;margin-bottom:2px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .record-detail{font-size:12px;color:var(--text-muted);line-height:1.5}
+  .record-timespan{font-size:13px;font-weight:600;color:#5b21b6;margin-bottom:2px;font-variant-numeric:tabular-nums}
+  .record-time-tag{font-size:11px;color:#d1d5db;font-weight:400}
+  .record-delete{background:none;border:none;color:#e5e7eb;font-size:18px;cursor:pointer;padding:2px 4px;line-height:1;transition:color .2s;flex-shrink:0;align-self:flex-start}
+  .record-delete:hover{color:#f87171}
+  .recorder-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:3px 8px;border-radius:10px;font-weight:500;flex-shrink:0}
+  .rb-爸爸{background:#dbeafe;color:#1d4ed8}.rb-妈妈{background:#fce7f3;color:#be185d}
+  .rb-爷爷{background:#dcfce7;color:#15803d}.rb-奶奶{background:#fff7ed;color:#c2410c}
 
-  .record-card {
-    background: var(--white); border-radius: var(--radius);
-    padding: 12px 14px; box-shadow: var(--card-shadow);
-    display: flex; align-items: flex-start; gap: 12px;
-    position: relative; animation: slideIn .25s ease;
-  }
-  @keyframes slideIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+  .empty-state{text-align:center;padding:40px 20px;color:var(--text-muted)}
+  .empty-state .emoji{font-size:48px;margin-bottom:12px}
+  .empty-state p{font-size:14px}
 
-  .record-icon-wrap { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
-  .type-sleep .record-icon-wrap{background:#f5f3ff} .type-feed .record-icon-wrap{background:#fff7ed}
-  .type-food .record-icon-wrap{background:#ecfdf5} .type-poop .record-icon-wrap{background:#fffbeb}
-  .type-play .record-icon-wrap{background:#f0f9ff} .type-mood .record-icon-wrap{background:#fdf2f8}
-  .type-weight .record-icon-wrap{background:#eef2ff} .type-note .record-icon-wrap{background:#f9fafb}
+  /* ── 历史页 ── */
+  .history-page{padding:0 0 16px}
 
-  .record-body { flex: 1; min-width: 0; }
-  .record-title { font-size: 13px; font-weight: 500; margin-bottom: 2px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-  .record-detail { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
-  .record-timespan { font-size: 13px; font-weight: 600; color: #5b21b6; margin-bottom: 2px; font-variant-numeric: tabular-nums; }
-  .record-time-tag { font-size: 11px; color: #d1d5db; font-weight: 400; }
-  .record-delete { background: none; border: none; color: #e5e7eb; font-size: 18px; cursor: pointer; padding: 2px 4px; line-height: 1; transition: color .2s; flex-shrink: 0; align-self: flex-start; }
-  .record-delete:hover { color: #f87171; }
+  .history-header{background:linear-gradient(135deg,#f9a8d4 0%,#fbcfe8 50%,#e9d5ff 100%);padding:20px 16px 16px;position:relative;overflow:hidden}
+  .history-header::before{content:'';position:absolute;width:160px;height:160px;background:rgba(255,255,255,.15);border-radius:50%;top:-50px;right:-30px}
+  .history-title{font-family:'Ma Shan Zheng',cursive;font-size:26px;color:#9d174d;margin-bottom:14px;position:relative;z-index:1}
 
-  .empty-state { text-align: center; padding: 40px 20px; color: var(--text-muted); }
-  .empty-state .emoji { font-size: 48px; margin-bottom: 12px; }
-  .empty-state p { font-size: 14px; }
+  /* 类型筛选 */
+  .filter-scroll{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;position:relative;z-index:1;scrollbar-width:none}
+  .filter-scroll::-webkit-scrollbar{display:none}
+  .filter-chip{flex-shrink:0;border:1.5px solid rgba(255,255,255,.6);background:rgba(255,255,255,.45);border-radius:20px;padding:6px 14px;font-size:13px;cursor:pointer;color:#9d174d;font-weight:500;transition:all .15s;white-space:nowrap}
+  .filter-chip.active{background:white;border-color:white;box-shadow:0 2px 8px rgba(244,114,182,.25)}
+  .filter-chip:active{transform:scale(.95)}
 
-  /* 加载状态 */
-  .loading-bar {
-    height: 3px;
-    background: linear-gradient(90deg, var(--pink), var(--lavender), var(--pink));
-    background-size: 200% 100%;
-    animation: loading 1.2s linear infinite;
-  }
-  @keyframes loading { 0%{background-position:0%} 100%{background-position:200%} }
+  /* 时间范围 */
+  .range-bar{display:flex;gap:6px;padding:12px 16px 0}
+  .range-btn{flex:1;border:1.5px solid #e5e7eb;background:var(--white);border-radius:20px;padding:7px 0;font-size:12px;font-family:'Noto Sans SC',sans-serif;cursor:pointer;color:var(--text-muted);transition:all .15s}
+  .range-btn.active{border-color:var(--pink);background:var(--pink-light);color:#9d174d;font-weight:500}
+
+  /* 日期分组 */
+  .date-group{padding:12px 16px 0}
+  .date-group-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .date-group-label{font-size:13px;font-weight:600;color:var(--text-muted)}
+  .date-group-line{flex:1;height:1px;background:#f3e8ff}
+  .date-group-items{display:flex;flex-direction:column;gap:8px}
+
+  /* 辅食聚合视图 */
+  .food-agg-section{padding:12px 16px 0}
+  .food-agg-title{font-size:13px;color:var(--text-muted);margin-bottom:10px;padding-left:2px}
+  .food-agg-grid{display:flex;flex-direction:column;gap:8px}
+  .food-agg-card{background:var(--white);border-radius:var(--radius-sm);padding:14px;box-shadow:var(--card-shadow)}
+  .food-agg-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+  .food-agg-name{font-size:15px;font-weight:600;color:var(--text)}
+  .food-agg-count{font-size:12px;color:var(--text-muted);background:var(--pink-soft);padding:3px 10px;border-radius:10px}
+  .food-reaction-row{display:flex;flex-wrap:wrap;gap:6px}
+  .food-reaction-tag{font-size:11px;padding:3px 9px;border-radius:10px;background:#f3f4f6;color:var(--text-muted)}
+  .food-dates{font-size:11px;color:#d1d5db;margin-top:6px}
+  .divider-section{height:1px;background:linear-gradient(to right,transparent,#f3e8ff,transparent);margin:16px 16px 0}
+
+  /* 便便关联辅食 */
+  .poop-food-link{margin-top:8px;padding:8px 10px;background:#fffbeb;border-radius:8px;border-left:3px solid var(--yellow)}
+  .poop-food-link-title{font-size:11px;color:#92400e;font-weight:600;margin-bottom:4px}
+  .poop-food-link-items{display:flex;flex-wrap:wrap;gap:4px}
+  .poop-food-item{font-size:11px;padding:2px 8px;border-radius:8px;background:#fef3c7;color:#92400e}
+  .poop-food-none{font-size:11px;color:#d1d5db}
+  .poop-abnormal{border-left-color:#f87171;background:#fff1f2}
+  .poop-abnormal .poop-food-link-title{color:#b91c1c}
+  .poop-abnormal .poop-food-item{background:#fee2e2;color:#b91c1c}
+
+  /* 加载条 */
+  .loading-bar{height:3px;background:linear-gradient(90deg,var(--pink),var(--lavender),var(--pink));background-size:200% 100%;animation:loadbar 1.2s linear infinite}
+  @keyframes loadbar{0%{background-position:0%}100%{background-position:200%}}
 
   /* Tab */
-  .tab-bar {
-    position: fixed; bottom: 0; left: 0; right: 0;
-    background: rgba(255,255,255,.92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-    border-top: 1px solid rgba(244,114,182,.15);
-    display: flex; padding: 8px 0 max(8px, env(safe-area-inset-bottom)); z-index: 100;
-  }
-  .tab-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; padding: 4px 0; border: none; background: none; transition: transform .15s; }
-  .tab-item:active { transform: scale(.9); }
-  .tab-item .t-icon { font-size: 22px; }
-  .tab-item .t-label { font-size: 10px; color: #9ca3af; }
-  .tab-item.active .t-label { color: var(--pink); font-weight: 500; }
-  .tab-item.active .t-icon { filter: drop-shadow(0 0 4px rgba(244,114,182,.6)); }
+  .tab-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid rgba(244,114,182,.15);display:flex;padding:8px 0 max(8px,env(safe-area-inset-bottom));z-index:100}
+  .tab-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 0;border:none;background:none;transition:transform .15s}
+  .tab-item:active{transform:scale(.9)}
+  .tab-item .t-icon{font-size:22px}
+  .tab-item .t-label{font-size:10px;color:#9ca3af}
+  .tab-item.active .t-label{color:var(--pink);font-weight:500}
+  .tab-item.active .t-icon{filter:drop-shadow(0 0 4px rgba(244,114,182,.6))}
 
   /* Modal */
-  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.4); backdrop-filter: blur(4px); z-index: 200; display: flex; align-items: flex-end; animation: fadeIn .2s ease; }
-  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
-  .modal-sheet { background: var(--white); border-radius: 24px 24px 0 0; width: 100%; padding: 20px 20px max(20px, env(safe-area-inset-bottom)); animation: slideUp .3s cubic-bezier(.34,1.56,.64,1); max-height: 85dvh; overflow-y: auto; }
-  @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
-  .modal-handle { width: 36px; height: 4px; background: #e5e7eb; border-radius: 2px; margin: 0 auto 20px; }
-  .modal-title { font-family: 'Ma Shan Zheng', cursive; font-size: 22px; color: var(--text); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(4px);z-index:200;display:flex;align-items:flex-end;animation:fadeIn .2s ease}
+  @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+  .modal-sheet{background:var(--white);border-radius:24px 24px 0 0;width:100%;padding:20px 20px max(20px,env(safe-area-inset-bottom));animation:slideUp .3s cubic-bezier(.34,1.56,.64,1);max-height:85dvh;overflow-y:auto}
+  @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+  .modal-handle{width:36px;height:4px;background:#e5e7eb;border-radius:2px;margin:0 auto 20px}
+  .modal-title{font-family:'Ma Shan Zheng',cursive;font-size:22px;color:var(--text);margin-bottom:20px;display:flex;align-items:center;gap:8px}
 
-  .form-group { margin-bottom: 16px; }
-  .form-label { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; display: block; }
-  .form-input, .form-select, .form-textarea {
-    width: 100%; border: 1.5px solid #f3e8ff; border-radius: var(--radius-sm);
-    padding: 12px 14px; font-size: 15px; font-family: 'Noto Sans SC', sans-serif;
-    color: var(--text); background: var(--pink-soft); outline: none; transition: border-color .2s; -webkit-appearance: none;
-  }
-  .form-input:focus,.form-select:focus,.form-textarea:focus { border-color: var(--pink); background: var(--white); }
-  .form-textarea { resize: none; min-height: 80px; }
-  .form-row { display: flex; gap: 10px; }
-  .form-row .form-group { flex: 1; }
-
-  .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
-  .chip { border: 1.5px solid #e5e7eb; background: var(--white); border-radius: 20px; padding: 6px 14px; font-size: 13px; cursor: pointer; transition: all .15s; color: var(--text-muted); }
-  .chip.selected { border-color: var(--pink); background: var(--pink-light); color: #9d174d; font-weight: 500; }
-
-  .btn-submit { width: 100%; background: linear-gradient(135deg,#f472b6,#ec4899); color: white; border: none; border-radius: var(--radius-sm); padding: 16px; font-size: 16px; font-family: 'Noto Sans SC', sans-serif; font-weight: 500; cursor: pointer; margin-top: 8px; box-shadow: 0 4px 16px rgba(236,72,153,.35); transition: transform .15s; }
-  .btn-submit:active { transform: scale(.97); }
+  .form-group{margin-bottom:16px}
+  .form-label{font-size:12px;color:var(--text-muted);margin-bottom:6px;display:block}
+  .form-input,.form-select,.form-textarea{width:100%;border:1.5px solid #f3e8ff;border-radius:var(--radius-sm);padding:12px 14px;font-size:15px;font-family:'Noto Sans SC',sans-serif;color:var(--text);background:var(--pink-soft);outline:none;transition:border-color .2s;-webkit-appearance:none}
+  .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--pink);background:var(--white)}
+  .form-textarea{resize:none;min-height:80px}
+  .form-row{display:flex;gap:10px}
+  .form-row .form-group{flex:1}
+  .chip-group{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{border:1.5px solid #e5e7eb;background:var(--white);border-radius:20px;padding:6px 14px;font-size:13px;cursor:pointer;transition:all .15s;color:var(--text-muted)}
+  .chip.selected{border-color:var(--pink);background:var(--pink-light);color:#9d174d;font-weight:500}
+  .btn-submit{width:100%;background:linear-gradient(135deg,#f472b6,#ec4899);color:white;border:none;border-radius:var(--radius-sm);padding:16px;font-size:16px;font-family:'Noto Sans SC',sans-serif;font-weight:500;cursor:pointer;margin-top:8px;box-shadow:0 4px 16px rgba(236,72,153,.35);transition:transform .15s}
+  .btn-submit:active{transform:scale(.97)}
 
   /* 睡眠 modal */
-  .sleep-modal-status { background: #f5f3ff; border-radius: var(--radius-sm); padding: 20px; text-align: center; margin-bottom: 16px; }
-  .sleep-modal-timer { font-family: 'Ma Shan Zheng', cursive; font-size: 48px; color: var(--lavender); letter-spacing: 2px; line-height: 1; margin-bottom: 6px; font-variant-numeric: tabular-nums; }
-  .sleep-modal-desc { font-size: 13px; color: #7c3aed; margin-bottom: 8px; }
-  .sleep-modal-starttime { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; }
-  .timer-btns { display: flex; gap: 10px; justify-content: center; }
-  .timer-btn { padding: 12px 28px; border-radius: 50px; border: none; font-size: 14px; font-family: 'Noto Sans SC', sans-serif; cursor: pointer; font-weight: 500; }
-  .timer-btn.start { background: var(--lavender); color: white; }
-  .timer-btn.wake  { background: #ec4899; color: white; }
-  .timer-btn.stop  { background: #f3f4f6; color: var(--text-muted); }
-  .divider { text-align: center; font-size: 12px; color: #d1d5db; margin: 4px 0 16px; position: relative; }
-  .divider::before,.divider::after { content:''; position:absolute; top:50%; width:35%; height:1px; background:#e5e7eb; }
-  .divider::before{left:0} .divider::after{right:0}
+  .sleep-modal-status{background:#f5f3ff;border-radius:var(--radius-sm);padding:20px;text-align:center;margin-bottom:16px}
+  .sleep-modal-timer{font-family:'Ma Shan Zheng',cursive;font-size:48px;color:var(--lavender);letter-spacing:2px;line-height:1;margin-bottom:6px;font-variant-numeric:tabular-nums}
+  .sleep-modal-desc{font-size:13px;color:#7c3aed;margin-bottom:8px}
+  .sleep-modal-starttime{font-size:12px;color:var(--text-muted);margin-bottom:16px}
+  .timer-btns{display:flex;gap:10px;justify-content:center}
+  .timer-btn{padding:12px 28px;border-radius:50px;border:none;font-size:14px;font-family:'Noto Sans SC',sans-serif;cursor:pointer;font-weight:500}
+  .timer-btn.start{background:var(--lavender);color:white}
+  .timer-btn.wake{background:#ec4899;color:white}
+  .timer-btn.stop{background:#f3f4f6;color:var(--text-muted)}
+  .divider{text-align:center;font-size:12px;color:#d1d5db;margin:4px 0 16px;position:relative}
+  .divider::before,.divider::after{content:'';position:absolute;top:50%;width:35%;height:1px;background:#e5e7eb}
+  .divider::before{left:0}.divider::after{right:0}
 
   /* 设置页 */
-  .settings-page { padding: 20px 16px; }
-  .settings-section { margin-bottom: 24px; }
-  .settings-section-title { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; padding-left: 4px; letter-spacing: .5px; }
-  .identity-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; }
-  .identity-card {
-    background: var(--white); border-radius: var(--radius-sm); padding: 20px 12px;
-    display: flex; flex-direction: column; align-items: center; gap: 8px;
-    box-shadow: var(--card-shadow); cursor: pointer; transition: transform .15s;
-    border: 2px solid transparent;
-  }
-  .identity-card:active { transform: scale(.96); }
-  .identity-card.selected { border-color: var(--pink); background: var(--pink-soft); }
-  .identity-card .id-emoji { font-size: 36px; }
-  .identity-card .id-name { font-size: 15px; font-weight: 500; }
-  .identity-card .id-check { font-size: 16px; color: var(--pink); height: 20px; }
+  .settings-page{padding:20px 16px}
+  .settings-section{margin-bottom:24px}
+  .settings-section-title{font-size:13px;color:var(--text-muted);margin-bottom:12px;padding-left:4px;letter-spacing:.5px}
+  .identity-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  .identity-card{background:var(--white);border-radius:var(--radius-sm);padding:20px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;box-shadow:var(--card-shadow);cursor:pointer;transition:transform .15s;border:2px solid transparent}
+  .identity-card:active{transform:scale(.96)}
+  .identity-card.selected{border-color:var(--pink);background:var(--pink-soft)}
+  .identity-card .id-emoji{font-size:36px}
+  .identity-card .id-name{font-size:15px;font-weight:500}
+  .identity-card .id-check{font-size:16px;color:var(--pink);height:20px}
+  .sync-status{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted);padding:10px 14px;background:var(--white);border-radius:var(--radius-sm);box-shadow:var(--card-shadow)}
+  .sync-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+  .sync-dot.ok{background:var(--mint)}.sync-dot.err{background:#f87171}.sync-dot.loading{background:var(--yellow);animation:pulse 1s infinite}
 
-  .sync-status { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); padding: 10px 14px; background: var(--white); border-radius: var(--radius-sm); box-shadow: var(--card-shadow); }
-  .sync-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-  .sync-dot.ok { background: var(--mint); }
-  .sync-dot.err { background: #f87171; }
-  .sync-dot.loading { background: var(--yellow); animation: pulse 1s infinite; }
-
-  .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-80px); background: #1e1b4b; color: white; padding: 10px 20px; border-radius: 50px; font-size: 13px; z-index: 999; transition: transform .3s cubic-bezier(.34,1.56,.64,1); white-space: nowrap; }
-  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-80px);background:#1e1b4b;color:white;padding:10px 20px;border-radius:50px;font-size:13px;z-index:999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap}
+  .toast.show{transform:translateX(-50%) translateY(0)}
 </style>
 </head>
 <body>
 <div id="app">
 
-  <!-- 加载条 -->
   <div class="loading-bar" v-if="loading"></div>
 
-  <!-- Header（日记/统计页显示） -->
-  <div class="header" v-if="tab !== 'settings'">
+  <!-- ── Header（日记页）── -->
+  <div class="header" v-if="tab==='diary'">
     <div class="header-content">
       <div class="header-top">
         <div class="baby-name">🌸 宝宝日记</div>
@@ -277,14 +242,15 @@
     <button class="sleep-banner-btn" @click="openModal('sleep')">睡醒了</button>
   </div>
 
-  <!-- ===== 日记 Tab ===== -->
-  <template v-if="tab === 'diary'">
-    <!-- 快速记录 -->
+  <!-- ════════════════════════════════
+       日记 Tab
+  ════════════════════════════════ -->
+  <template v-if="tab==='diary'">
     <div class="quick-section">
       <div class="section-title">快速记录</div>
       <div class="quick-grid">
-        <button class="quick-btn" :class="sleepRunning ? 'sleep-active' : ''" @click="openModal('sleep')">
-          <span class="icon">🌙</span><span class="label">{{ sleepRunning ? '睡眠中' : '睡眠' }}</span>
+        <button class="quick-btn" :class="sleepRunning?'sleep-active':''" @click="openModal('sleep')">
+          <span class="icon">🌙</span><span class="label">{{ sleepRunning?'睡眠中':'睡眠' }}</span>
         </button>
         <button class="quick-btn" @click="openModal('feed')"><span class="icon">🍼</span><span class="label">喂养</span></button>
         <button class="quick-btn" @click="openModal('food')"><span class="icon">🥣</span><span class="label">辅食</span></button>
@@ -296,15 +262,13 @@
       </div>
     </div>
 
-    <!-- 今日汇总 -->
-    <div class="today-summary" v-if="todayRecords.length > 0">
-      <div class="summary-card"><div class="s-label">今日睡眠</div><div><span class="s-value s-sleep">{{ todaySleepHours }}</span><span class="s-unit">小时</span></div></div>
+    <div class="today-summary" v-if="todayRecords.length>0">
+      <div class="summary-card"><div class="s-label">今日睡眠</div><div><span class="s-value s-sleep">{{ todaySleepHours }}</span><span class="s-unit">h</span></div></div>
       <div class="summary-card"><div class="s-label">今日喂养</div><div><span class="s-value s-feed">{{ todayFeedTotal }}</span><span class="s-unit">ml</span></div></div>
       <div class="summary-card"><div class="s-label">辅食次数</div><div><span class="s-value s-food">{{ todayFoodCount }}</span><span class="s-unit">次</span></div></div>
       <div class="summary-card"><div class="s-label">便便次数</div><div><span class="s-value s-poop">{{ todayPoopCount }}</span><span class="s-unit">次</span></div></div>
     </div>
 
-    <!-- 时间线 -->
     <div class="timeline-section">
       <div class="timeline-header">
         <div class="section-title" style="margin-bottom:0">记录时间线</div>
@@ -314,44 +278,170 @@
           <button @click="nextDay" :disabled="isToday">▶</button>
         </div>
       </div>
-
-      <div class="timeline" v-if="viewRecords.length > 0">
-        <div v-for="r in viewRecords" :key="r.id" class="record-card" :class="'type-' + r.type">
+      <div class="timeline" v-if="viewRecords.length>0">
+        <div v-for="r in viewRecords" :key="r.id" class="record-card" :class="'type-'+r.type">
           <div class="record-icon-wrap">{{ typeIcon(r.type) }}</div>
           <div class="record-body">
-            <template v-if="r.type === 'sleep' && r.start_time">
+            <template v-if="r.type==='sleep'&&r.start_time">
               <div class="record-timespan">{{ formatHM(r.start_time) }}~{{ formatHM(r.end_time) }}</div>
               <div class="record-detail">{{ r.detail }}</div>
             </template>
             <template v-else>
-              <div class="record-title">
-                {{ typeLabel(r.type) }}
-                <span class="record-time-tag">{{ formatHM(r.time) }}</span>
-              </div>
+              <div class="record-title">{{ typeLabel(r.type) }}<span class="record-time-tag">{{ formatHM(r.time) }}</span></div>
               <div class="record-detail">{{ r.detail }}</div>
             </template>
           </div>
-          <!-- 记录者标签 -->
           <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0">
-            <span v-if="r.recorder" class="recorder-badge" :class="'rb-' + r.recorder">{{ recorderEmoji(r.recorder) }} {{ r.recorder }}</span>
+            <span v-if="r.recorder" class="recorder-badge" :class="'rb-'+r.recorder">{{ recorderEmoji(r.recorder) }} {{ r.recorder }}</span>
             <button class="record-delete" @click="deleteRecord(r.id)">×</button>
           </div>
         </div>
       </div>
       <div class="empty-state" v-else>
-        <div class="emoji">🌱</div>
-        <p>这天还没有记录</p>
+        <div class="emoji">🌱</div><p>这天还没有记录</p>
         <p style="margin-top:6px;font-size:12px">点击上方快速记录开始吧</p>
       </div>
     </div>
   </template>
 
-  <!-- ===== 设置 Tab ===== -->
-  <template v-if="tab === 'settings'">
+  <!-- ════════════════════════════════
+       历史 Tab
+  ════════════════════════════════ -->
+  <template v-if="tab==='history'">
+    <div class="history-page">
+      <!-- 顶部：标题 + 类型筛选 -->
+      <div class="history-header">
+        <div class="history-title">📚 历史记录</div>
+        <div class="filter-scroll">
+          <div v-for="f in historyFilters" :key="f.type"
+               class="filter-chip" :class="{active:historyType===f.type}"
+               @click="historyType=f.type">
+            {{ f.icon }} {{ f.label }}
+          </div>
+        </div>
+      </div>
+
+      <!-- 时间范围 -->
+      <div class="range-bar">
+        <button v-for="r in historyRanges" :key="r.val"
+                class="range-btn" :class="{active:historyRange===r.val}"
+                @click="historyRange=r.val">{{ r.label }}</button>
+      </div>
+
+      <!-- ── 辅食：聚合视图 ── -->
+      <template v-if="historyType==='food'">
+        <div class="food-agg-section">
+          <div class="food-agg-title">📊 食材出现频次（{{ historyRangeLabel }}）</div>
+          <div v-if="foodAggList.length===0" class="empty-state" style="padding:30px 20px">
+            <div class="emoji">🥣</div><p>这段时间没有辅食记录</p>
+          </div>
+          <div class="food-agg-grid">
+            <div v-for="item in foodAggList" :key="item.name" class="food-agg-card">
+              <div class="food-agg-top">
+                <div class="food-agg-name">{{ item.name }}</div>
+                <div class="food-agg-count">共 {{ item.count }} 次</div>
+              </div>
+              <div class="food-reaction-row">
+                <span v-for="rx in item.reactions" :key="rx" class="food-reaction-tag">{{ rx }}</span>
+              </div>
+              <div class="food-dates">最近：{{ item.lastDate }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="divider-section"></div>
+
+        <!-- 辅食详细记录（按日期分组）-->
+        <div v-for="group in historyGrouped" :key="group.date" class="date-group">
+          <div class="date-group-header">
+            <div class="date-group-label">{{ group.dateLabel }}</div>
+            <div class="date-group-line"></div>
+          </div>
+          <div class="date-group-items">
+            <div v-for="r in group.records" :key="r.id" class="record-card type-food">
+              <div class="record-icon-wrap">🥣</div>
+              <div class="record-body">
+                <div class="record-title">辅食<span class="record-time-tag">{{ formatHM(r.time) }}</span></div>
+                <div class="record-detail">{{ r.detail }}</div>
+              </div>
+              <span v-if="r.recorder" class="recorder-badge" :class="'rb-'+r.recorder">{{ recorderEmoji(r.recorder) }}</span>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      <!-- ── 便便：关联前24h辅食 ── -->
+      <template v-else-if="historyType==='poop'">
+        <div v-for="group in historyGrouped" :key="group.date" class="date-group">
+          <div class="date-group-header">
+            <div class="date-group-label">{{ group.dateLabel }}</div>
+            <div class="date-group-line"></div>
+          </div>
+          <div class="date-group-items">
+            <div v-for="r in group.records" :key="r.id">
+              <div class="record-card type-poop">
+                <div class="record-icon-wrap">💩</div>
+                <div class="record-body">
+                  <div class="record-title">便便<span class="record-time-tag">{{ formatHM(r.time) }}</span></div>
+                  <div class="record-detail">{{ r.detail }}</div>
+                  <!-- 关联辅食 -->
+                  <div class="poop-food-link" :class="isPoopAbnormal(r)?'poop-abnormal':''">
+                    <div class="poop-food-link-title">
+                      {{ isPoopAbnormal(r) ? '⚠️ 异常便便 · 前24h吃过' : '🔗 前24h吃过的辅食' }}
+                    </div>
+                    <div class="poop-food-link-items" v-if="linkedFoods(r).length>0">
+                      <span v-for="f in linkedFoods(r)" :key="f" class="poop-food-item">{{ f }}</span>
+                    </div>
+                    <div class="poop-food-none" v-else>前24h无辅食记录</div>
+                  </div>
+                </div>
+                <span v-if="r.recorder" class="recorder-badge" :class="'rb-'+r.recorder">{{ recorderEmoji(r.recorder) }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="empty-state" v-if="historyGrouped.length===0" style="padding-top:40px">
+          <div class="emoji">💩</div><p>这段时间没有便便记录</p>
+        </div>
+      </template>
+
+      <!-- ── 其他类型：按日期分组 ── -->
+      <template v-else>
+        <div v-for="group in historyGrouped" :key="group.date" class="date-group">
+          <div class="date-group-header">
+            <div class="date-group-label">{{ group.dateLabel }}</div>
+            <div class="date-group-line"></div>
+          </div>
+          <div class="date-group-items">
+            <div v-for="r in group.records" :key="r.id" class="record-card" :class="'type-'+r.type">
+              <div class="record-icon-wrap">{{ typeIcon(r.type) }}</div>
+              <div class="record-body">
+                <template v-if="r.type==='sleep'&&r.start_time">
+                  <div class="record-timespan">{{ formatHM(r.start_time) }}~{{ formatHM(r.end_time) }}</div>
+                  <div class="record-detail">{{ r.detail }}</div>
+                </template>
+                <template v-else>
+                  <div class="record-title">{{ typeLabel(r.type) }}<span class="record-time-tag">{{ formatHM(r.time) }}</span></div>
+                  <div class="record-detail">{{ r.detail }}</div>
+                </template>
+              </div>
+              <span v-if="r.recorder" class="recorder-badge" :class="'rb-'+r.recorder">{{ recorderEmoji(r.recorder) }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="empty-state" v-if="historyGrouped.length===0" style="padding-top:40px">
+          <div class="emoji">🌱</div><p>这段时间没有相关记录</p>
+        </div>
+      </template>
+    </div>
+  </template>
+
+  <!-- ════════════════════════════════
+       设置 Tab
+  ════════════════════════════════ -->
+  <template v-if="tab==='settings'">
     <div class="settings-page">
       <div style="font-family:'Ma Shan Zheng',cursive;font-size:26px;color:#9d174d;margin-bottom:20px;padding-top:10px">⚙️ 设置</div>
-
-      <!-- 同步状态 -->
       <div class="settings-section">
         <div class="settings-section-title">数据同步</div>
         <div class="sync-status">
@@ -360,66 +450,58 @@
           <span v-if="lastSyncTime" style="margin-left:auto;color:#d1d5db">{{ lastSyncTime }}</span>
         </div>
       </div>
-
-      <!-- 身份选择 -->
       <div class="settings-section">
         <div class="settings-section-title">我是谁</div>
         <div class="identity-grid">
-          <div
-            v-for="id in identities" :key="id.name"
-            class="identity-card"
-            :class="{ selected: recorder === id.name }"
-            @click="setRecorder(id.name)"
-          >
+          <div v-for="id in identities" :key="id.name" class="identity-card" :class="{selected:recorder===id.name}" @click="setRecorder(id.name)">
             <div class="id-emoji">{{ id.emoji }}</div>
             <div class="id-name">{{ id.name }}</div>
-            <div class="id-check">{{ recorder === id.name ? '✓' : '' }}</div>
+            <div class="id-check">{{ recorder===id.name?'✓':'' }}</div>
           </div>
         </div>
         <div v-if="recorder" style="margin-top:12px;text-align:center;font-size:13px;color:var(--text-muted)">
           当前身份：<strong>{{ recorder }}</strong>，记录时会自动标注
         </div>
       </div>
-
-      <!-- 关于 -->
       <div class="settings-section">
         <div class="settings-section-title">关于</div>
         <div style="background:var(--white);border-radius:var(--radius-sm);padding:16px;box-shadow:var(--card-shadow);font-size:13px;color:var(--text-muted);line-height:2">
           <div>数据存储：Supabase 云端</div>
           <div>多端实时同步：✅ 已开启</div>
-          <div>本地缓存：✅ 支持离线查看</div>
+          <div>记录者标注：✅ 支持</div>
         </div>
       </div>
     </div>
   </template>
 
-  <!-- Toast -->
-  <div class="toast" :class="{ show: toastVisible }">{{ toastMsg }}</div>
+  <div class="toast" :class="{show:toastVisible}">{{ toastMsg }}</div>
 
   <!-- Tab 栏 -->
   <div class="tab-bar">
-    <button class="tab-item" :class="{ active: tab==='diary' }" @click="tab='diary'">
+    <button class="tab-item" :class="{active:tab==='diary'}" @click="tab='diary'">
       <span class="t-icon">📖</span><span class="t-label">日记</span>
     </button>
-    <button class="tab-item" :class="{ active: tab==='stats' }" @click="tab='stats'">
-      <span class="t-icon">📊</span><span class="t-label">统计</span>
+    <button class="tab-item" :class="{active:tab==='history'}" @click="tab='history'">
+      <span class="t-icon">📚</span><span class="t-label">历史</span>
     </button>
-    <button class="tab-item" :class="{ active: tab==='baby' }" @click="tab='baby'">
+    <button class="tab-item" :class="{active:tab==='baby'}" @click="tab='baby'">
       <span class="t-icon">👶</span><span class="t-label">宝宝</span>
     </button>
-    <button class="tab-item" :class="{ active: tab==='settings' }" @click="tab='settings'">
+    <button class="tab-item" :class="{active:tab==='settings'}" @click="tab='settings'">
       <span class="t-icon">⚙️</span><span class="t-label">设置</span>
     </button>
   </div>
 
-  <!-- ===== 睡眠 Modal ===== -->
-  <div class="modal-overlay" v-if="modal === 'sleep'" @click.self="closeModal">
+  <!-- ════ Modals ════ -->
+
+  <!-- 睡眠 -->
+  <div class="modal-overlay" v-if="modal==='sleep'" @click.self="closeModal">
     <div class="modal-sheet">
       <div class="modal-handle"></div>
       <div class="modal-title">🌙 睡眠记录</div>
       <div class="sleep-modal-status">
         <div class="sleep-modal-timer">{{ sleepTimerDisplay }}</div>
-        <div class="sleep-modal-desc">{{ sleepRunning ? '正在睡觉中～' : (sleepStartTs ? '计时已停止' : '点击开始计时') }}</div>
+        <div class="sleep-modal-desc">{{ sleepRunning?'正在睡觉中～':(sleepStartTs?'计时已停止':'点击开始计时') }}</div>
         <div class="sleep-modal-starttime" v-if="sleepStartTs">开始时间：{{ sleepStartTimeStr }}</div>
         <div class="timer-btns">
           <button class="timer-btn start" @click="toggleSleepTimer" v-if="!sleepRunning">💤 开始睡</button>
@@ -437,16 +519,13 @@
     </div>
   </div>
 
-  <!-- ===== 喂养 Modal ===== -->
-  <div class="modal-overlay" v-if="modal === 'feed'" @click.self="closeModal">
+  <!-- 喂养 -->
+  <div class="modal-overlay" v-if="modal==='feed'" @click.self="closeModal">
     <div class="modal-sheet">
       <div class="modal-handle"></div>
       <div class="modal-title">🍼 记录喂养</div>
-      <div class="form-group">
-        <label class="form-label">喂养方式</label>
-        <div class="chip-group">
-          <div v-for="t in ['母乳','配方奶','混合']" :key="t" class="chip" :class="{selected:feedForm.type===t}" @click="feedForm.type=t">{{ t }}</div>
-        </div>
+      <div class="form-group"><label class="form-label">喂养方式</label>
+        <div class="chip-group"><div v-for="t in ['母乳','配方奶','混合']" :key="t" class="chip" :class="{selected:feedForm.type===t}" @click="feedForm.type=t">{{ t }}</div></div>
       </div>
       <div class="form-row">
         <div class="form-group"><label class="form-label">喂养量（ml）</label><input class="form-input" type="number" v-model="feedForm.amount"></div>
@@ -458,25 +537,20 @@
     </div>
   </div>
 
-  <!-- ===== 辅食 Modal ===== -->
-  <div class="modal-overlay" v-if="modal === 'food'" @click.self="closeModal">
+  <!-- 辅食 -->
+  <div class="modal-overlay" v-if="modal==='food'" @click.self="closeModal">
     <div class="modal-sheet">
       <div class="modal-handle"></div>
       <div class="modal-title">🥣 记录辅食</div>
-      <div class="form-group">
-        <label class="form-label">辅食内容（可多选）</label>
-        <div class="chip-group">
-          <div v-for="f in foodOptions" :key="f" class="chip" :class="{selected:foodForm.items.includes(f)}" @click="toggleFood(f)">{{ f }}</div>
-        </div>
+      <div class="form-group"><label class="form-label">辅食内容（可多选）</label>
+        <div class="chip-group"><div v-for="f in foodOptions" :key="f" class="chip" :class="{selected:foodForm.items.includes(f)}" @click="toggleFood(f)">{{ f }}</div></div>
       </div>
       <div class="form-group"><label class="form-label">其他</label><input class="form-input" v-model="foodForm.custom" placeholder="例如：南瓜泥、豆腐"></div>
       <div class="form-row">
         <div class="form-group"><label class="form-label">总量（g）</label><input class="form-input" type="number" v-model="foodForm.amount"></div>
-        <div class="form-group">
-          <label class="form-label">接受程度</label>
+        <div class="form-group"><label class="form-label">接受程度</label>
           <select class="form-select" v-model="foodForm.reaction">
-            <option value="">选择</option>
-            <option>很喜欢 😍</option><option>还行 😐</option><option>不喜欢 😣</option><option>过敏反应 ⚠️</option>
+            <option value="">选择</option><option>很喜欢 😍</option><option>还行 😐</option><option>不喜欢 😣</option><option>过敏反应 ⚠️</option>
           </select>
         </div>
       </div>
@@ -485,8 +559,8 @@
     </div>
   </div>
 
-  <!-- ===== 便便 Modal ===== -->
-  <div class="modal-overlay" v-if="modal === 'poop'" @click.self="closeModal">
+  <!-- 便便 -->
+  <div class="modal-overlay" v-if="modal==='poop'" @click.self="closeModal">
     <div class="modal-sheet">
       <div class="modal-handle"></div>
       <div class="modal-title">💩 记录便便</div>
@@ -498,8 +572,8 @@
     </div>
   </div>
 
-  <!-- ===== 游玩 Modal ===== -->
-  <div class="modal-overlay" v-if="modal === 'play'" @click.self="closeModal">
+  <!-- 游玩 -->
+  <div class="modal-overlay" v-if="modal==='play'" @click.self="closeModal">
     <div class="modal-sheet">
       <div class="modal-handle"></div>
       <div class="modal-title">🧸 记录游玩</div>
@@ -511,8 +585,8 @@
     </div>
   </div>
 
-  <!-- ===== 心情 Modal ===== -->
-  <div class="modal-overlay" v-if="modal === 'mood'" @click.self="closeModal">
+  <!-- 心情 -->
+  <div class="modal-overlay" v-if="modal==='mood'" @click.self="closeModal">
     <div class="modal-sheet">
       <div class="modal-handle"></div>
       <div class="modal-title">😊 记录心情</div>
@@ -522,8 +596,8 @@
     </div>
   </div>
 
-  <!-- ===== 体重 Modal ===== -->
-  <div class="modal-overlay" v-if="modal === 'weight'" @click.self="closeModal">
+  <!-- 体重 -->
+  <div class="modal-overlay" v-if="modal==='weight'" @click.self="closeModal">
     <div class="modal-sheet">
       <div class="modal-handle"></div>
       <div class="modal-title">⚖️ 记录体重身高</div>
@@ -537,8 +611,8 @@
     </div>
   </div>
 
-  <!-- ===== 备注 Modal ===== -->
-  <div class="modal-overlay" v-if="modal === 'note'" @click.self="closeModal">
+  <!-- 备注 -->
+  <div class="modal-overlay" v-if="modal==='note'" @click.self="closeModal">
     <div class="modal-sheet">
       <div class="modal-handle"></div>
       <div class="modal-title">📝 添加备注</div>
@@ -547,11 +621,10 @@
     </div>
   </div>
 
-</div><!-- end #app -->
+</div><!-- /#app -->
 
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <script>
-// ===== Supabase 初始化 =====
 const SUPABASE_URL = 'https://xagaahvgvkwshmcigild.supabase.co'
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhhZ2FhaHZndmt3c2htY2lnaWxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5NTQ3MzQsImV4cCI6MjA5NTUzMDczNH0.DeagiWOyPYc_xXhaDTpPGmq5km98cbSgVaoTNH3OvVw'
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
@@ -560,340 +633,340 @@ const { createApp, ref, computed, onMounted, onUnmounted } = Vue
 
 createApp({
   setup() {
-    const tab = ref('diary')
+    const tab     = ref('diary')
     const records = ref([])
-    const modal = ref(null)
-    const viewDate = ref(new Date().toISOString().slice(0, 10))
+    const modal   = ref(null)
+    const viewDate= ref(new Date().toISOString().slice(0,10))
     const toastVisible = ref(false)
-    const toastMsg = ref('')
-    const loading = ref(true)
-    const syncStatus = ref('loading')   // ok | err | loading
+    const toastMsg     = ref('')
+    const loading      = ref(true)
+    const syncStatus   = ref('loading')
     const lastSyncTime = ref('')
 
-    // 身份
-    const recorder = ref(localStorage.getItem('recorder') || '')
+    // ── 身份 ──
+    const recorder = ref(localStorage.getItem('recorder')||'')
     const identities = [
-      { name: '爸爸', emoji: '👨' },
-      { name: '妈妈', emoji: '👩' },
-      { name: '爷爷', emoji: '👴' },
-      { name: '奶奶', emoji: '👵' },
+      {name:'爸爸',emoji:'👨'},{name:'妈妈',emoji:'👩'},
+      {name:'爷爷',emoji:'👴'},{name:'奶奶',emoji:'👵'}
     ]
-    function setRecorder(name) {
-      recorder.value = name
-      localStorage.setItem('recorder', name)
-      showToast(`✅ 身份已设置为${name}`)
-    }
-    function recorderEmoji(name) {
-      return identities.find(i => i.name === name)?.emoji || '👤'
-    }
-    const syncStatusText = computed(() => ({
-      ok: '已连接 Supabase，数据实时同步中',
-      err: '连接失败，请检查网络',
-      loading: '连接中...'
-    }[syncStatus.value]))
+    function setRecorder(name){ recorder.value=name; localStorage.setItem('recorder',name); showToast(`✅ 身份已设置为${name}`) }
+    function recorderEmoji(name){ return identities.find(i=>i.name===name)?.emoji||'👤' }
+    const syncStatusText = computed(()=>({ok:'已连接，实时同步中',err:'连接失败，请检查网络',loading:'连接中...'}[syncStatus.value]))
 
-    // ===== 睡眠计时器（持久化）=====
-    const sleepStartTs = ref(parseInt(localStorage.getItem('sleep_start_ts') || '0') || null)
+    // ── 历史页状态 ──
+    const historyType  = ref('all')
+    const historyRange = ref(7)
+    const historyFilters = [
+      {type:'all',icon:'📋',label:'全部'},
+      {type:'food',icon:'🥣',label:'辅食'},
+      {type:'poop',icon:'💩',label:'便便'},
+      {type:'sleep',icon:'🌙',label:'睡眠'},
+      {type:'feed',icon:'🍼',label:'喂养'},
+      {type:'weight',icon:'⚖️',label:'体重'},
+      {type:'play',icon:'🧸',label:'游玩'},
+      {type:'mood',icon:'😊',label:'心情'},
+    ]
+    const historyRanges = [{val:7,label:'近7天'},{val:30,label:'近30天'},{val:0,label:'全部'}]
+    const historyRangeLabel = computed(()=>historyRanges.find(r=>r.val===historyRange.value)?.label||'')
+
+    // 过滤后的历史记录
+    const historyFiltered = computed(()=>{
+      const cutoff = historyRange.value
+        ? new Date(Date.now() - historyRange.value*24*3600*1000).toISOString().slice(0,10)
+        : '0000-01-01'
+      return records.value
+        .filter(r => r.date >= cutoff && (historyType.value==='all' || r.type===historyType.value))
+        .sort((a,b)=>new Date(b.time)-new Date(a.time))
+    })
+
+    // 按日期分组
+    const historyGrouped = computed(()=>{
+      const groups = {}
+      historyFiltered.value.forEach(r=>{
+        if (!groups[r.date]) groups[r.date]=[]
+        groups[r.date].push(r)
+      })
+      return Object.keys(groups).sort((a,b)=>b.localeCompare(a)).map(date=>({
+        date,
+        dateLabel: formatDateLabel(date),
+        records: groups[date].sort((a,b)=>new Date(a.time)-new Date(b.time))
+      }))
+    })
+
+    // 辅食聚合：提取食材名称并统计
+    const foodAggList = computed(()=>{
+      const cutoff = historyRange.value
+        ? new Date(Date.now()-historyRange.value*24*3600*1000).toISOString().slice(0,10)
+        : '0000-01-01'
+      const foodRecs = records.value.filter(r=>r.type==='food'&&r.date>=cutoff)
+      const map = {}
+      foodRecs.forEach(r=>{
+        // detail格式: "蛋黄、南瓜 · 50g · 很喜欢 😍 · 备注"
+        const parts = r.detail.split(' · ')
+        const ingredients = parts[0].split('、').map(s=>s.trim()).filter(Boolean)
+        const reaction = parts.find(p=>p.includes('😍')||p.includes('😐')||p.includes('😣')||p.includes('⚠️'))||''
+        ingredients.forEach(name=>{
+          if (!map[name]) map[name]={name,count:0,reactions:[],lastDate:''}
+          map[name].count++
+          if (reaction && !map[name].reactions.includes(reaction)) map[name].reactions.push(reaction)
+          if (r.date > map[name].lastDate) map[name].lastDate = r.date
+        })
+      })
+      return Object.values(map).sort((a,b)=>b.count-a.count)
+    })
+
+    // 便便关联：获取该条便便前24h的辅食食材
+    function linkedFoods(poopRecord){
+      const poopTime = new Date(poopRecord.time).getTime()
+      const before24h = poopTime - 24*3600*1000
+      const foodsBefore = records.value.filter(r=>{
+        const t = new Date(r.time).getTime()
+        return r.type==='food' && t>=before24h && t<=poopTime
+      })
+      const ingredients = new Set()
+      foodsBefore.forEach(r=>{
+        const parts = r.detail.split(' · ')
+        parts[0].split('、').forEach(s=>{ if(s.trim()) ingredients.add(s.trim()) })
+      })
+      return [...ingredients]
+    }
+
+    // 判断便便是否异常（绿色/红色/稀水样）
+    function isPoopAbnormal(r){
+      return r.detail.includes('绿色')||r.detail.includes('红色')||r.detail.includes('稀水样')||r.detail.includes('血丝')
+    }
+
+    function formatDateLabel(dateStr){
+      const today = new Date().toISOString().slice(0,10)
+      const yesterday = new Date(Date.now()-86400000).toISOString().slice(0,10)
+      if (dateStr===today) return '今天'
+      if (dateStr===yesterday) return '昨天'
+      const d = new Date(dateStr+'T00:00:00')
+      const weeks=['日','一','二','三','四','五','六']
+      return `${d.getMonth()+1}月${d.getDate()}日 周${weeks[d.getDay()]}`
+    }
+
+    // ── 睡眠计时器（持久化）──
+    const sleepStartTs = ref(parseInt(localStorage.getItem('sleep_start_ts')||'0')||null)
     const sleepRunning = ref(!!sleepStartTs.value)
     const sleepElapsed = ref(0)
-    let sleepInterval = null
-
-    function calcElapsed() {
-      return sleepStartTs.value ? Math.floor((Date.now() - sleepStartTs.value) / 1000) : 0
-    }
-    if (sleepRunning.value) {
+    let sleepInterval  = null
+    function calcElapsed(){ return sleepStartTs.value ? Math.floor((Date.now()-sleepStartTs.value)/1000) : 0 }
+    if (sleepRunning.value){
       sleepElapsed.value = calcElapsed()
-      sleepInterval = setInterval(() => { sleepElapsed.value = calcElapsed() }, 1000)
+      sleepInterval = setInterval(()=>{ sleepElapsed.value=calcElapsed() },1000)
     }
-
-    const sleepTimerDisplay = computed(() => {
-      const s = sleepElapsed.value
-      const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60
+    const sleepTimerDisplay = computed(()=>{
+      const s=sleepElapsed.value, h=Math.floor(s/3600), m=Math.floor((s%3600)/60), sec=s%60
       return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`
     })
-    const sleepStartTimeStr = computed(() =>
-      sleepStartTs.value ? formatHM(new Date(sleepStartTs.value).toISOString()) : ''
-    )
-
-    function toggleSleepTimer() {
-      const now = Date.now()
-      sleepStartTs.value = now
-      localStorage.setItem('sleep_start_ts', String(now))
-      sleepRunning.value = true
-      sleepElapsed.value = 0
-      sleepInterval = setInterval(() => { sleepElapsed.value = calcElapsed() }, 1000)
+    const sleepStartTimeStr = computed(()=> sleepStartTs.value ? formatHM(new Date(sleepStartTs.value).toISOString()) : '')
+    function toggleSleepTimer(){
+      const now=Date.now(); sleepStartTs.value=now; localStorage.setItem('sleep_start_ts',String(now))
+      sleepRunning.value=true; sleepElapsed.value=0
+      sleepInterval=setInterval(()=>{ sleepElapsed.value=calcElapsed() },1000)
     }
-    function resetSleepTimer() {
-      clearInterval(sleepInterval)
-      sleepRunning.value = false; sleepStartTs.value = null; sleepElapsed.value = 0
+    function resetSleepTimer(){
+      clearInterval(sleepInterval); sleepRunning.value=false; sleepStartTs.value=null; sleepElapsed.value=0
       localStorage.removeItem('sleep_start_ts')
     }
-    async function stopAndSaveSleep() {
+    async function stopAndSaveSleep(){
       clearInterval(sleepInterval)
-      const startIso = new Date(sleepStartTs.value).toISOString()
-      const endIso = new Date().toISOString()
-      const mins = Math.round(sleepElapsed.value / 60)
-      const label = sleepForm.value.note || (mins < 60 ? '小睡' : '睡眠')
-      const h = Math.floor(mins / 60), m = mins % 60
-      const durStr = h > 0 ? `${h}小时${m > 0 ? m+'分钟' : ''}` : `${m}分钟`
-      await insertRecord({
-        type: 'sleep', detail: `${label}（${durStr}）`,
-        time: startIso, date: startIso.slice(0, 10),
-        start_time: startIso, end_time: endIso
-      })
-      sleepRunning.value = false; sleepStartTs.value = null; sleepElapsed.value = 0
+      const startIso=new Date(sleepStartTs.value).toISOString(), endIso=new Date().toISOString()
+      const mins=Math.round(sleepElapsed.value/60)
+      const label=sleepForm.value.note||(mins<60?'小睡':'睡眠')
+      const h=Math.floor(mins/60),m=mins%60
+      const durStr=h>0?`${h}小时${m>0?m+'分钟':''}`:`${m}分钟`
+      await insertRecord({type:'sleep',detail:`${label}（${durStr}）`,time:startIso,date:startIso.slice(0,10),start_time:startIso,end_time:endIso})
+      sleepRunning.value=false; sleepStartTs.value=null; sleepElapsed.value=0
       localStorage.removeItem('sleep_start_ts')
-      sleepForm.value = { manualStart: nowTime(), manualEnd: nowTime(), note: '' }
+      sleepForm.value={manualStart:nowTime(),manualEnd:nowTime(),note:''}
     }
-    async function saveManualSleep() {
-      const { manualStart, manualEnd, note } = sleepForm.value
-      if (!manualStart || !manualEnd) { showToast('请填写开始和结束时间'); return }
-      const today = new Date().toISOString().slice(0, 10)
-      const startIso = `${today}T${manualStart}:00+08:00`
-      let endIso = `${today}T${manualEnd}:00+08:00`
-      if (manualEnd <= manualStart) {
-        const nd = new Date(new Date(today).getTime() + 86400000).toISOString().slice(0, 10)
-        endIso = `${nd}T${manualEnd}:00+08:00`
+    async function saveManualSleep(){
+      const {manualStart,manualEnd,note}=sleepForm.value
+      if (!manualStart||!manualEnd){showToast('请填写开始和结束时间');return}
+      const today=new Date().toISOString().slice(0,10)
+      const startIso=`${today}T${manualStart}:00+08:00`
+      let endIso=`${today}T${manualEnd}:00+08:00`
+      if (manualEnd<=manualStart){
+        const nd=new Date(new Date(today).getTime()+86400000).toISOString().slice(0,10)
+        endIso=`${nd}T${manualEnd}:00+08:00`
       }
-      const mins = Math.round((new Date(endIso) - new Date(startIso)) / 60000)
-      if (mins <= 0) { showToast('结束时间需晚于开始时间'); return }
-      const label = note || (mins < 60 ? '小睡' : '睡眠')
-      const h = Math.floor(mins / 60), m = mins % 60
-      const durStr = h > 0 ? `${h}小时${m > 0 ? m+'分钟' : ''}` : `${m}分钟`
-      await insertRecord({
-        type: 'sleep', detail: `${label}（${durStr}）`,
-        time: startIso, date: today,
-        start_time: startIso, end_time: endIso
-      })
-      sleepForm.value = { manualStart: nowTime(), manualEnd: nowTime(), note: '' }
+      const mins=Math.round((new Date(endIso)-new Date(startIso))/60000)
+      if (mins<=0){showToast('结束时间需晚于开始时间');return}
+      const label=note||(mins<60?'小睡':'睡眠')
+      const h=Math.floor(mins/60),m=mins%60
+      const durStr=h>0?`${h}小时${m>0?m+'分钟':''}`:`${m}分钟`
+      await insertRecord({type:'sleep',detail:`${label}（${durStr}）`,time:startIso,date:today,start_time:startIso,end_time:endIso})
+      sleepForm.value={manualStart:nowTime(),manualEnd:nowTime(),note:''}
     }
 
-    // ===== 表单 =====
-    const sleepForm = ref({ manualStart: nowTime(), manualEnd: nowTime(), note: '' })
-    const feedForm  = ref({ type: '配方奶', amount: '205', duration: '10', time: nowTime(), note: '' })
-    const foodForm  = ref({ items: [], custom: '', amount: '', reaction: '', note: '' })
-    const poopForm  = ref({ color: '', texture: '', amount: '', note: '' })
-    const playForm  = ref({ items: [], custom: '', duration: '', note: '' })
-    const moodForm  = ref({ mood: '', note: '' })
-    const weightForm= ref({ weight: '', height: '', head: '', note: '' })
-    const noteForm  = ref({ content: '' })
-    const foodOptions = ['米粉','蛋黄','南瓜','红薯','胡萝卜','西兰花','豆腐','鱼泥','肉泥','水果泥']
-    const playOptions = ['摇铃','积木','绘本','爬行垫','户外','音乐','洗澡','抚触']
+    // ── 表单 ──
+    const sleepForm  = ref({manualStart:nowTime(),manualEnd:nowTime(),note:''})
+    const feedForm   = ref({type:'配方奶',amount:'205',duration:'10',time:nowTime(),note:''})
+    const foodForm   = ref({items:[],custom:'',amount:'',reaction:'',note:''})
+    const poopForm   = ref({color:'',texture:'',amount:'',note:''})
+    const playForm   = ref({items:[],custom:'',duration:'',note:''})
+    const moodForm   = ref({mood:'',note:''})
+    const weightForm = ref({weight:'',height:'',head:'',note:''})
+    const noteForm   = ref({content:''})
+    const foodOptions= ['米粉','蛋黄','南瓜','红薯','胡萝卜','西兰花','豆腐','鱼泥','肉泥','水果泥']
+    const playOptions= ['摇铃','积木','绘本','爬行垫','户外','音乐','洗澡','抚触']
 
-    function nowTime() {
-      const d = new Date()
-      return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`
+    function nowTime(){ const d=new Date(); return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}` }
+    function openModal(type){
+      if(type==='feed') feedForm.value.time=nowTime()
+      if(type==='sleep'){sleepForm.value.manualStart=nowTime();sleepForm.value.manualEnd=nowTime()}
+      modal.value=type
     }
-    function openModal(type) {
-      if (type === 'feed') feedForm.value.time = nowTime()
-      if (type === 'sleep') { sleepForm.value.manualStart = nowTime(); sleepForm.value.manualEnd = nowTime() }
-      modal.value = type
-    }
-    function closeModal() { modal.value = null }
-    function showToast(msg) {
-      toastMsg.value = msg; toastVisible.value = true
-      setTimeout(() => { toastVisible.value = false }, 2200)
-    }
-    function toggleFood(f) { const i = foodForm.value.items.indexOf(f); i >= 0 ? foodForm.value.items.splice(i,1) : foodForm.value.items.push(f) }
-    function togglePlay(p) { const i = playForm.value.items.indexOf(p); i >= 0 ? playForm.value.items.splice(i,1) : playForm.value.items.push(p) }
+    function closeModal(){ modal.value=null }
+    function showToast(msg){ toastMsg.value=msg; toastVisible.value=true; setTimeout(()=>{ toastVisible.value=false },2200) }
+    function toggleFood(f){ const i=foodForm.value.items.indexOf(f); i>=0?foodForm.value.items.splice(i,1):foodForm.value.items.push(f) }
+    function togglePlay(p){ const i=playForm.value.items.indexOf(p); i>=0?playForm.value.items.splice(i,1):playForm.value.items.push(p) }
 
-    // ===== Supabase CRUD =====
-    async function fetchRecords() {
-      loading.value = true
-      try {
-        const { data, error } = await sb.from('records').select('*').order('time', { ascending: true })
-        if (error) throw error
-        records.value = data || []
-        syncStatus.value = 'ok'
-        lastSyncTime.value = nowTime()
-      } catch (e) {
-        console.error(e)
-        syncStatus.value = 'err'
-        showToast('⚠️ 加载失败，请检查网络')
-      } finally {
-        loading.value = false
-      }
+    // ── Supabase ──
+    async function fetchRecords(){
+      loading.value=true
+      try{
+        const {data,error}=await sb.from('records').select('*').order('time',{ascending:true})
+        if(error) throw error
+        records.value=data||[]; syncStatus.value='ok'; lastSyncTime.value=nowTime()
+      }catch(e){ console.error(e); syncStatus.value='err'; showToast('⚠️ 加载失败') }
+      finally{ loading.value=false }
     }
-
-    async function insertRecord(payload) {
-      if (!recorder.value) { showToast('请先在设置中选择身份'); return }
-      const row = { ...payload, recorder: recorder.value }
-      // 乐观更新：先本地插入
-      const tempId = Date.now()
-      records.value.push({ ...row, id: tempId })
-      closeModal()
-      try {
-        const { data, error } = await sb.from('records').insert(row).select().single()
-        if (error) throw error
-        // 用真实 id 替换临时 id
-        const idx = records.value.findIndex(r => r.id === tempId)
-        if (idx >= 0) records.value[idx] = data
-        showToast('✅ 记录成功！')
-        lastSyncTime.value = nowTime()
-      } catch (e) {
-        console.error(e)
-        // 回滚
-        records.value = records.value.filter(r => r.id !== tempId)
-        showToast('❌ 保存失败，请重试')
-      }
+    async function insertRecord(payload){
+      if(!recorder.value){showToast('请先在设置中选择身份');return}
+      const row={...payload,recorder:recorder.value}
+      const tempId=Date.now(); records.value.push({...row,id:tempId}); closeModal()
+      try{
+        const {data,error}=await sb.from('records').insert(row).select().single()
+        if(error) throw error
+        const idx=records.value.findIndex(r=>r.id===tempId)
+        if(idx>=0) records.value[idx]=data
+        showToast('✅ 记录成功！'); lastSyncTime.value=nowTime()
+      }catch(e){ console.error(e); records.value=records.value.filter(r=>r.id!==tempId); showToast('❌ 保存失败') }
     }
-
-    async function deleteRecord(id) {
-      const backup = [...records.value]
-      records.value = records.value.filter(r => r.id !== id)
-      try {
-        const { error } = await sb.from('records').delete().eq('id', id)
-        if (error) throw error
-        showToast('已删除')
-        lastSyncTime.value = nowTime()
-      } catch (e) {
-        records.value = backup
-        showToast('❌ 删除失败')
-      }
+    async function deleteRecord(id){
+      const backup=[...records.value]; records.value=records.value.filter(r=>r.id!==id)
+      try{
+        const {error}=await sb.from('records').delete().eq('id',id)
+        if(error) throw error; showToast('已删除'); lastSyncTime.value=nowTime()
+      }catch(e){ records.value=backup; showToast('❌ 删除失败') }
     }
-
-    // 实时订阅（其他人记录后自动刷新）
-    function subscribeRealtime() {
+    function subscribeRealtime(){
       sb.channel('records-changes')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'records' }, payload => {
-          if (payload.eventType === 'INSERT') {
-            // 避免重复（乐观更新已有临时记录时跳过）
-            if (!records.value.find(r => r.id === payload.new.id)) {
+        .on('postgres_changes',{event:'*',schema:'public',table:'records'},payload=>{
+          if(payload.eventType==='INSERT'){
+            if(!records.value.find(r=>r.id===payload.new.id)){
               records.value.push(payload.new)
-              showToast(`📲 ${payload.new.recorder || '家人'}记录了新数据`)
+              showToast(`📲 ${payload.new.recorder||'家人'}记录了新数据`)
             }
-          } else if (payload.eventType === 'DELETE') {
-            records.value = records.value.filter(r => r.id !== payload.old.id)
+          } else if(payload.eventType==='DELETE'){
+            records.value=records.value.filter(r=>r.id!==payload.old.id)
           }
         })
-        .subscribe(status => {
-          syncStatus.value = status === 'SUBSCRIBED' ? 'ok' : 'loading'
-        })
+        .subscribe(status=>{ syncStatus.value=status==='SUBSCRIBED'?'ok':'loading' })
     }
 
-    // ===== 各类保存 =====
-    async function saveFeed() {
-      const parts = [feedForm.value.type]
-      if (feedForm.value.amount)   parts.push(feedForm.value.amount + 'ml')
-      if (feedForm.value.duration) parts.push(feedForm.value.duration + '分钟')
-      if (feedForm.value.note)     parts.push(feedForm.value.note)
-      const today = new Date().toISOString().slice(0, 10)
-      await insertRecord({ type:'feed', detail: parts.join(' · '), time:`${today}T${feedForm.value.time}:00+08:00`, date: today })
-      feedForm.value = { type:'配方奶', amount:'205', duration:'10', time: nowTime(), note:'' }
+    // ── 各类保存 ──
+    async function saveFeed(){
+      const parts=[feedForm.value.type]
+      if(feedForm.value.amount) parts.push(feedForm.value.amount+'ml')
+      if(feedForm.value.duration) parts.push(feedForm.value.duration+'分钟')
+      if(feedForm.value.note) parts.push(feedForm.value.note)
+      const today=new Date().toISOString().slice(0,10)
+      await insertRecord({type:'feed',detail:parts.join(' · '),time:`${today}T${feedForm.value.time}:00+08:00`,date:today})
+      feedForm.value={type:'配方奶',amount:'205',duration:'10',time:nowTime(),note:''}
     }
-    async function saveFood() {
-      const items = [...foodForm.value.items]
-      if (foodForm.value.custom) items.push(...foodForm.value.custom.split('、').map(s=>s.trim()).filter(Boolean))
-      if (!items.length) { showToast('请选择辅食内容'); return }
-      const parts = [items.join('、')]
-      if (foodForm.value.amount)   parts.push(foodForm.value.amount + 'g')
-      if (foodForm.value.reaction) parts.push(foodForm.value.reaction)
-      if (foodForm.value.note)     parts.push(foodForm.value.note)
-      await insertRecord({ type:'food', detail: parts.join(' · '), time: new Date().toISOString(), date: new Date().toISOString().slice(0,10) })
-      foodForm.value = { items:[], custom:'', amount:'', reaction:'', note:'' }
+    async function saveFood(){
+      const items=[...foodForm.value.items]
+      if(foodForm.value.custom) items.push(...foodForm.value.custom.split('、').map(s=>s.trim()).filter(Boolean))
+      if(!items.length){showToast('请选择辅食内容');return}
+      const parts=[items.join('、')]
+      if(foodForm.value.amount) parts.push(foodForm.value.amount+'g')
+      if(foodForm.value.reaction) parts.push(foodForm.value.reaction)
+      if(foodForm.value.note) parts.push(foodForm.value.note)
+      await insertRecord({type:'food',detail:parts.join(' · '),time:new Date().toISOString(),date:new Date().toISOString().slice(0,10)})
+      foodForm.value={items:[],custom:'',amount:'',reaction:'',note:''}
     }
-    async function savePoop() {
-      const parts = []
-      if (poopForm.value.color)   parts.push(poopForm.value.color)
-      if (poopForm.value.texture) parts.push(poopForm.value.texture)
-      if (poopForm.value.amount)  parts.push(poopForm.value.amount)
-      if (poopForm.value.note)    parts.push(poopForm.value.note)
-      await insertRecord({ type:'poop', detail: parts.length ? parts.join(' · ') : '便便一次', time: new Date().toISOString(), date: new Date().toISOString().slice(0,10) })
-      poopForm.value = { color:'', texture:'', amount:'', note:'' }
+    async function savePoop(){
+      const parts=[]
+      if(poopForm.value.color) parts.push(poopForm.value.color)
+      if(poopForm.value.texture) parts.push(poopForm.value.texture)
+      if(poopForm.value.amount) parts.push(poopForm.value.amount)
+      if(poopForm.value.note) parts.push(poopForm.value.note)
+      await insertRecord({type:'poop',detail:parts.length?parts.join(' · '):'便便一次',time:new Date().toISOString(),date:new Date().toISOString().slice(0,10)})
+      poopForm.value={color:'',texture:'',amount:'',note:''}
     }
-    async function savePlay() {
-      const items = [...playForm.value.items]
-      if (playForm.value.custom) items.push(...playForm.value.custom.split('、').map(s=>s.trim()).filter(Boolean))
-      if (!items.length && !playForm.value.duration) { showToast('请填写游玩内容'); return }
-      const parts = items.length ? [items.join('、')] : []
-      if (playForm.value.duration) parts.push(playForm.value.duration + '分钟')
-      if (playForm.value.note)     parts.push(playForm.value.note)
-      await insertRecord({ type:'play', detail: parts.join(' · ') || '玩耍', time: new Date().toISOString(), date: new Date().toISOString().slice(0,10) })
-      playForm.value = { items:[], custom:'', duration:'', note:'' }
+    async function savePlay(){
+      const items=[...playForm.value.items]
+      if(playForm.value.custom) items.push(...playForm.value.custom.split('、').map(s=>s.trim()).filter(Boolean))
+      if(!items.length&&!playForm.value.duration){showToast('请填写游玩内容');return}
+      const parts=items.length?[items.join('、')]:[]
+      if(playForm.value.duration) parts.push(playForm.value.duration+'分钟')
+      if(playForm.value.note) parts.push(playForm.value.note)
+      await insertRecord({type:'play',detail:parts.join(' · ')||'玩耍',time:new Date().toISOString(),date:new Date().toISOString().slice(0,10)})
+      playForm.value={items:[],custom:'',duration:'',note:''}
     }
-    async function saveMood() {
-      if (!moodForm.value.mood) { showToast('请选择心情'); return }
-      const parts = [moodForm.value.mood]
-      if (moodForm.value.note) parts.push(moodForm.value.note)
-      await insertRecord({ type:'mood', detail: parts.join(' · '), time: new Date().toISOString(), date: new Date().toISOString().slice(0,10) })
-      moodForm.value = { mood:'', note:'' }
+    async function saveMood(){
+      if(!moodForm.value.mood){showToast('请选择心情');return}
+      const parts=[moodForm.value.mood]
+      if(moodForm.value.note) parts.push(moodForm.value.note)
+      await insertRecord({type:'mood',detail:parts.join(' · '),time:new Date().toISOString(),date:new Date().toISOString().slice(0,10)})
+      moodForm.value={mood:'',note:''}
     }
-    async function saveWeight() {
-      const parts = []
-      if (weightForm.value.weight) parts.push('体重 ' + weightForm.value.weight + 'kg')
-      if (weightForm.value.height) parts.push('身长 ' + weightForm.value.height + 'cm')
-      if (weightForm.value.head)   parts.push('头围 ' + weightForm.value.head + 'cm')
-      if (weightForm.value.note)   parts.push(weightForm.value.note)
-      if (!parts.length) { showToast('请至少填写一项'); return }
-      await insertRecord({ type:'weight', detail: parts.join(' · '), time: new Date().toISOString(), date: new Date().toISOString().slice(0,10) })
-      weightForm.value = { weight:'', height:'', head:'', note:'' }
+    async function saveWeight(){
+      const parts=[]
+      if(weightForm.value.weight) parts.push('体重 '+weightForm.value.weight+'kg')
+      if(weightForm.value.height) parts.push('身长 '+weightForm.value.height+'cm')
+      if(weightForm.value.head)   parts.push('头围 '+weightForm.value.head+'cm')
+      if(weightForm.value.note)   parts.push(weightForm.value.note)
+      if(!parts.length){showToast('请至少填写一项');return}
+      await insertRecord({type:'weight',detail:parts.join(' · '),time:new Date().toISOString(),date:new Date().toISOString().slice(0,10)})
+      weightForm.value={weight:'',height:'',head:'',note:''}
     }
-    async function saveNote() {
-      if (!noteForm.value.content.trim()) { showToast('请输入备注内容'); return }
-      await insertRecord({ type:'note', detail: noteForm.value.content.trim(), time: new Date().toISOString(), date: new Date().toISOString().slice(0,10) })
-      noteForm.value = { content:'' }
+    async function saveNote(){
+      if(!noteForm.value.content.trim()){showToast('请输入备注内容');return}
+      await insertRecord({type:'note',detail:noteForm.value.content.trim(),time:new Date().toISOString(),date:new Date().toISOString().slice(0,10)})
+      noteForm.value={content:''}
     }
 
-    // ===== 计算属性 =====
-    const isToday = computed(() => viewDate.value === new Date().toISOString().slice(0,10))
-    const viewDateLabel = computed(() => {
-      if (isToday.value) return '今天'
-      const d = new Date(viewDate.value + 'T00:00:00')
+    // ── 日记页计算属性 ──
+    const isToday = computed(()=>viewDate.value===new Date().toISOString().slice(0,10))
+    const viewDateLabel = computed(()=>{
+      if(isToday.value) return '今天'
+      const d=new Date(viewDate.value+'T00:00:00')
       return `${d.getMonth()+1}月${d.getDate()}日`
     })
-    const todayLabel = computed(() => {
-      const d = new Date()
-      const weeks = ['日','一','二','三','四','五','六']
+    const todayLabel = computed(()=>{
+      const d=new Date(), weeks=['日','一','二','三','四','五','六']
       return `${d.getMonth()+1}月${d.getDate()}日 周${weeks[d.getDay()]}`
     })
-    function prevDay() {
-      const d = new Date(viewDate.value + 'T00:00:00'); d.setDate(d.getDate()-1)
-      viewDate.value = d.toISOString().slice(0,10)
-    }
-    function nextDay() {
-      if (isToday.value) return
-      const d = new Date(viewDate.value + 'T00:00:00'); d.setDate(d.getDate()+1)
-      viewDate.value = d.toISOString().slice(0,10)
-    }
-
-    const viewRecords = computed(() =>
-      records.value.filter(r => r.date === viewDate.value)
-        .sort((a,b) => new Date(a.time) - new Date(b.time))
-    )
-    const todayRecords = computed(() =>
-      records.value.filter(r => r.date === new Date().toISOString().slice(0,10))
-    )
-    const todaySleepHours = computed(() => {
-      let total = 0
-      todayRecords.value.filter(r => r.type==='sleep').forEach(r => {
-        if (r.start_time && r.end_time) total += (new Date(r.end_time) - new Date(r.start_time)) / 60000
-      })
-      return total > 0 ? (total/60).toFixed(1) : 0
+    function prevDay(){ const d=new Date(viewDate.value+'T00:00:00'); d.setDate(d.getDate()-1); viewDate.value=d.toISOString().slice(0,10) }
+    function nextDay(){ if(isToday.value) return; const d=new Date(viewDate.value+'T00:00:00'); d.setDate(d.getDate()+1); viewDate.value=d.toISOString().slice(0,10) }
+    const viewRecords = computed(()=>records.value.filter(r=>r.date===viewDate.value).sort((a,b)=>new Date(a.time)-new Date(b.time)))
+    const todayRecords= computed(()=>records.value.filter(r=>r.date===new Date().toISOString().slice(0,10)))
+    const todaySleepHours=computed(()=>{
+      let t=0; todayRecords.value.filter(r=>r.type==='sleep').forEach(r=>{ if(r.start_time&&r.end_time) t+=(new Date(r.end_time)-new Date(r.start_time))/60000 }); return t>0?(t/60).toFixed(1):0
     })
-    const todayFeedCount = computed(() => todayRecords.value.filter(r=>r.type==='feed').length)
-    const todayFeedTotal = computed(() => {
-      let t = 0
-      todayRecords.value.filter(r=>r.type==='feed').forEach(r => { const m = r.detail.match(/(\d+)ml/); if(m) t+=parseInt(m[1]) })
-      return t
-    })
-    const todayPoopCount = computed(() => todayRecords.value.filter(r=>r.type==='poop').length)
-    const todayFoodCount = computed(() => todayRecords.value.filter(r=>r.type==='food').length)
+    const todayFeedCount=computed(()=>todayRecords.value.filter(r=>r.type==='feed').length)
+    const todayFeedTotal=computed(()=>{ let t=0; todayRecords.value.filter(r=>r.type==='feed').forEach(r=>{ const m=r.detail.match(/(\d+)ml/); if(m) t+=parseInt(m[1]) }); return t })
+    const todayPoopCount=computed(()=>todayRecords.value.filter(r=>r.type==='poop').length)
+    const todayFoodCount=computed(()=>todayRecords.value.filter(r=>r.type==='food').length)
 
-    function typeIcon(t) { return {sleep:'🌙',feed:'🍼',food:'🥣',poop:'💩',play:'🧸',mood:'😊',weight:'⚖️',note:'📝'}[t]||'📌' }
+    function typeIcon(t){ return {sleep:'🌙',feed:'🍼',food:'🥣',poop:'💩',play:'🧸',mood:'😊',weight:'⚖️',note:'📝'}[t]||'📌' }
     function typeLabel(t){ return {sleep:'睡眠',feed:'喂养',food:'辅食',poop:'便便',play:'游玩',mood:'心情',weight:'生长',note:'备注'}[t]||'记录' }
-    function formatHM(iso) {
-      if (!iso) return ''
-      const d = new Date(iso)
-      return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`
-    }
+    function formatHM(iso){ if(!iso) return ''; const d=new Date(iso); return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}` }
 
-    onMounted(() => { fetchRecords(); subscribeRealtime() })
-    onUnmounted(() => { if (sleepInterval) clearInterval(sleepInterval) })
+    onMounted(()=>{ fetchRecords(); subscribeRealtime() })
+    onUnmounted(()=>{ if(sleepInterval) clearInterval(sleepInterval) })
 
     return {
       tab, records, modal, viewDate, toastVisible, toastMsg, loading,
       syncStatus, syncStatusText, lastSyncTime,
       recorder, identities, setRecorder, recorderEmoji,
+      historyType, historyRange, historyFilters, historyRanges, historyRangeLabel,
+      historyGrouped, foodAggList, linkedFoods, isPoopAbnormal,
       sleepStartTs, sleepRunning, sleepElapsed, sleepTimerDisplay, sleepStartTimeStr,
       sleepForm, feedForm, foodForm, poopForm, playForm, moodForm, weightForm, noteForm,
       foodOptions, playOptions,
