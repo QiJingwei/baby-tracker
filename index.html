@@ -904,7 +904,7 @@ const { createApp, ref, computed, onMounted, onUnmounted } = Vue
 
 createApp({
   setup() {
-    const babyName = ref('小团子')
+    const babyName = ref('柚柚')
     const records = ref(JSON.parse(localStorage.getItem('baby_records') || '[]'))
     const modal = ref(null)
     const viewDate = ref(new Date().toISOString().slice(0, 10))
