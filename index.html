@@ -735,7 +735,7 @@
       <div class="import-body">
         <!-- 上传区 -->
         <div class="upload-zone" @click="triggerFileInput">
-          <input ref="fileInputRef" type="file" accept="image/*" multiple @change="onFilesSelected">
+          <input ref="fileInputRef" type="file" accept="image/*" multiple @change="onFilesSelected" @click.stop>
           <div class="upload-icon">📸</div>
           <div class="upload-text">点击选择照片</div>
           <div class="upload-hint">可同时选多张，支持批量识别</div>
