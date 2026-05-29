@@ -40,7 +40,6 @@
     overflow-x: hidden;
   }
 
-  /* ---- 顶部 Header ---- */
   .header {
     background: linear-gradient(135deg, #f9a8d4 0%, #fbcfe8 50%, #e9d5ff 100%);
     padding: 20px 20px 28px;
@@ -78,11 +77,7 @@
     padding: 4px 10px;
     border-radius: 20px;
   }
-  .header-stats {
-    display: flex;
-    gap: 12px;
-    margin-top: 12px;
-  }
+  .header-stats { display: flex; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
   .stat-chip {
     background: rgba(255,255,255,0.6);
     backdrop-filter: blur(8px);
@@ -96,10 +91,42 @@
   }
   .stat-chip span { font-size: 16px; }
 
-  /* ---- 快速记录按钮区 ---- */
-  .quick-section {
-    padding: 20px 16px 8px;
+  /* 睡眠进行中横幅 */
+  .sleep-banner {
+    background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+    border-bottom: 1px solid #c4b5fd;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
   }
+  .sleep-banner-left { display: flex; align-items: center; gap: 8px; }
+  .sleep-banner-dot {
+    width: 8px; height: 8px;
+    background: #7c3aed;
+    border-radius: 50%;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+  .sleep-banner-text { font-size: 13px; color: #5b21b6; }
+  .sleep-banner-time { font-size: 16px; font-weight: 600; color: #5b21b6; font-variant-numeric: tabular-nums; }
+  .sleep-banner-btn {
+    background: #7c3aed;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 7px 16px;
+    font-size: 13px;
+    font-family: 'Noto Sans SC', sans-serif;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .quick-section { padding: 20px 16px 8px; }
   .section-title {
     font-size: 13px;
     color: var(--text-muted);
@@ -123,33 +150,17 @@
     align-items: center;
     gap: 6px;
     box-shadow: var(--card-shadow);
-    transition: transform 0.15s, box-shadow 0.15s;
+    transition: transform 0.15s;
     position: relative;
     overflow: hidden;
-  }
-  .quick-btn::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    transition: opacity 0.15s;
   }
   .quick-btn:active { transform: scale(0.94); }
   .quick-btn .icon { font-size: 26px; line-height: 1; }
   .quick-btn .label { font-size: 11px; color: var(--text-muted); font-weight: 500; }
-  .quick-btn.sleep { box-shadow: 0 4px 20px rgba(167,139,250,0.2); }
-  .quick-btn.feed  { box-shadow: 0 4px 20px rgba(251,146,60,0.2); }
-  .quick-btn.food  { box-shadow: 0 4px 20px rgba(52,211,153,0.2); }
-  .quick-btn.poop  { box-shadow: 0 4px 20px rgba(251,191,36,0.2); }
-  .quick-btn.play  { box-shadow: 0 4px 20px rgba(56,189,248,0.2); }
-  .quick-btn.mood  { box-shadow: 0 4px 20px rgba(244,114,182,0.2); }
-  .quick-btn.weight { box-shadow: 0 4px 20px rgba(99,102,241,0.2); }
-  .quick-btn.note  { box-shadow: 0 4px 20px rgba(107,114,128,0.2); }
+  .quick-btn.sleep-active { background: #f5f3ff; }
+  .quick-btn.sleep-active .label { color: #7c3aed; font-weight: 600; }
 
-  /* ---- 时间线 ---- */
-  .timeline-section {
-    padding: 8px 16px;
-  }
+  .timeline-section { padding: 8px 16px; }
   .timeline-header {
     display: flex;
     justify-content: space-between;
@@ -168,32 +179,70 @@
     box-shadow: var(--card-shadow);
     display: flex; align-items: center; justify-content: center;
   }
-  .date-nav button:active { transform: scale(0.9); }
+  .date-nav button:disabled { opacity: 0.35; cursor: default; }
+  .date-nav button:not(:disabled):active { transform: scale(0.9); }
   .date-label { font-size: 14px; font-weight: 500; }
 
   .timeline { display: flex; flex-direction: column; gap: 10px; }
 
+  /* 时间线条 */
+  .timeline-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .timeline-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 44px;
+    flex-shrink: 0;
+  }
+  .timeline-time-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+    line-height: 1.3;
+    margin-top: 12px;
+  }
+  .timeline-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    margin-top: 17px;
+    flex-shrink: 0;
+  }
+  .type-sleep .timeline-dot { background: var(--lavender); }
+  .type-feed  .timeline-dot { background: var(--peach); }
+  .type-food  .timeline-dot { background: var(--mint); }
+  .type-poop  .timeline-dot { background: var(--yellow); }
+  .type-play  .timeline-dot { background: var(--sky); }
+  .type-mood  .timeline-dot { background: var(--pink); }
+  .type-weight .timeline-dot { background: #818cf8; }
+  .type-note  .timeline-dot { background: #9ca3af; }
+
   .record-card {
     background: var(--white);
     border-radius: var(--radius);
-    padding: 14px 16px;
+    padding: 12px 14px;
     box-shadow: var(--card-shadow);
     display: flex;
     align-items: flex-start;
-    gap: 14px;
+    gap: 12px;
     position: relative;
-    animation: slideIn 0.3s ease;
+    animation: slideIn 0.25s ease;
+    flex: 1;
+    min-width: 0;
   }
   @keyframes slideIn {
-    from { opacity: 0; transform: translateY(8px); }
+    from { opacity: 0; transform: translateY(6px); }
     to   { opacity: 1; transform: translateY(0); }
   }
-
   .record-icon-wrap {
-    width: 44px; height: 44px;
-    border-radius: 14px;
+    width: 40px; height: 40px;
+    border-radius: 12px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 22px;
+    font-size: 20px;
     flex-shrink: 0;
   }
   .type-sleep .record-icon-wrap { background: #f5f3ff; }
@@ -206,24 +255,27 @@
   .type-note  .record-icon-wrap { background: #f9fafb; }
 
   .record-body { flex: 1; min-width: 0; }
-  .record-title { font-size: 14px; font-weight: 500; margin-bottom: 3px; }
+  .record-title { font-size: 13px; font-weight: 500; margin-bottom: 2px; }
   .record-detail { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
-  .record-time {
-    font-size: 11px;
-    color: #d1d5db;
-    flex-shrink: 0;
-    margin-top: 2px;
+  /* 睡眠时段高亮 */
+  .record-timespan {
+    font-size: 13px;
+    font-weight: 600;
+    color: #5b21b6;
+    margin-bottom: 2px;
+    font-variant-numeric: tabular-nums;
   }
   .record-delete {
-    position: absolute;
-    top: 10px; right: 12px;
     background: none;
     border: none;
     color: #e5e7eb;
-    font-size: 16px;
+    font-size: 18px;
     cursor: pointer;
-    padding: 4px;
+    padding: 2px 4px;
+    line-height: 1;
     transition: color 0.2s;
+    flex-shrink: 0;
+    align-self: flex-start;
   }
   .record-delete:hover { color: #f87171; }
 
@@ -235,7 +287,28 @@
   .empty-state .emoji { font-size: 48px; margin-bottom: 12px; }
   .empty-state p { font-size: 14px; }
 
-  /* ---- 底部 Tab 栏 ---- */
+  /* 今日汇总 */
+  .today-summary {
+    padding: 0 16px 8px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .summary-card {
+    background: var(--white);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    box-shadow: var(--card-shadow);
+  }
+  .summary-card .s-label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
+  .summary-card .s-value { font-size: 20px; font-weight: 600; }
+  .summary-card .s-unit  { font-size: 11px; color: var(--text-muted); margin-left: 2px; }
+  .s-sleep { color: var(--lavender); }
+  .s-feed  { color: var(--peach); }
+  .s-poop  { color: var(--yellow); }
+  .s-food  { color: var(--mint); }
+
+  /* Tab */
   .tab-bar {
     position: fixed;
     bottom: 0; left: 0; right: 0;
@@ -265,7 +338,7 @@
   .tab-item.active .t-label { color: var(--pink); font-weight: 500; }
   .tab-item.active .t-icon { filter: drop-shadow(0 0 4px rgba(244,114,182,0.6)); }
 
-  /* ---- Modal 弹窗 ---- */
+  /* Modal */
   .modal-overlay {
     position: fixed;
     inset: 0;
@@ -291,7 +364,6 @@
     from { transform: translateY(100%); }
     to   { transform: translateY(0); }
   }
-
   .modal-handle {
     width: 36px; height: 4px;
     background: #e5e7eb;
@@ -328,7 +400,6 @@
     background: var(--white);
   }
   .form-textarea { resize: none; min-height: 80px; }
-
   .form-row { display: flex; gap: 10px; }
   .form-row .form-group { flex: 1; }
 
@@ -363,26 +434,29 @@
     cursor: pointer;
     margin-top: 8px;
     box-shadow: 0 4px 16px rgba(236,72,153,0.35);
-    transition: transform 0.15s, box-shadow 0.15s;
+    transition: transform 0.15s;
   }
-  .btn-submit:active {
-    transform: scale(0.97);
-    box-shadow: 0 2px 8px rgba(236,72,153,0.25);
-  }
+  .btn-submit:active { transform: scale(0.97); }
 
-  /* 睡眠计时器 */
-  .sleep-timer {
+  /* 睡眠 Modal */
+  .sleep-modal-status {
+    background: #f5f3ff;
+    border-radius: var(--radius-sm);
+    padding: 20px;
     text-align: center;
-    padding: 20px 0;
+    margin-bottom: 16px;
   }
-  .sleep-timer .timer-display {
+  .sleep-modal-timer {
     font-family: 'Ma Shan Zheng', cursive;
-    font-size: 52px;
+    font-size: 48px;
     color: var(--lavender);
     letter-spacing: 2px;
-    margin-bottom: 8px;
+    line-height: 1;
+    margin-bottom: 6px;
+    font-variant-numeric: tabular-nums;
   }
-  .sleep-timer .timer-label { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; }
+  .sleep-modal-desc { font-size: 13px; color: #7c3aed; margin-bottom: 16px; }
+  .sleep-modal-starttime { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; }
   .timer-btns { display: flex; gap: 10px; justify-content: center; }
   .timer-btn {
     padding: 12px 28px;
@@ -396,26 +470,23 @@
   .timer-btn.start { background: var(--lavender); color: white; }
   .timer-btn.stop  { background: #f3f4f6; color: var(--text-muted); }
 
-  /* 统计小卡 */
-  .today-summary {
-    padding: 0 16px 8px;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+  .divider {
+    text-align: center;
+    font-size: 12px;
+    color: #d1d5db;
+    margin: 4px 0 16px;
+    position: relative;
   }
-  .summary-card {
-    background: var(--white);
-    border-radius: var(--radius-sm);
-    padding: 14px;
-    box-shadow: var(--card-shadow);
+  .divider::before, .divider::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 35%;
+    height: 1px;
+    background: #e5e7eb;
   }
-  .summary-card .s-label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
-  .summary-card .s-value { font-size: 20px; font-weight: 600; }
-  .summary-card .s-unit  { font-size: 11px; color: var(--text-muted); margin-left: 2px; }
-  .s-sleep { color: var(--lavender); }
-  .s-feed  { color: var(--peach); }
-  .s-poop  { color: var(--yellow); }
-  .s-food  { color: var(--mint); }
+  .divider::before { left: 0; }
+  .divider::after { right: 0; }
 
   .toast {
     position: fixed;
@@ -452,13 +523,23 @@
     </div>
   </div>
 
+  <!-- 睡眠进行中横幅（全局显示，不依赖 modal） -->
+  <div class="sleep-banner" v-if="sleepRunning">
+    <div class="sleep-banner-left">
+      <div class="sleep-banner-dot"></div>
+      <div class="sleep-banner-text">睡眠中 · 开始于 {{ sleepStartTimeStr }}</div>
+    </div>
+    <div class="sleep-banner-time">{{ sleepTimerDisplay }}</div>
+    <button class="sleep-banner-btn" @click="openModal('sleep')">睡醒了</button>
+  </div>
+
   <!-- 快速记录 -->
   <div class="quick-section">
     <div class="section-title">快速记录</div>
     <div class="quick-grid">
-      <button class="quick-btn sleep" @click="openModal('sleep')">
+      <button class="quick-btn" :class="sleepRunning ? 'sleep-active' : 'sleep'" @click="openModal('sleep')">
         <span class="icon">🌙</span>
-        <span class="label">睡眠</span>
+        <span class="label">{{ sleepRunning ? '睡眠中' : '睡眠' }}</span>
       </button>
       <button class="quick-btn feed" @click="openModal('feed')">
         <span class="icon">🍼</span>
@@ -526,16 +607,27 @@
       <div
         v-for="r in viewRecords"
         :key="r.id"
-        class="record-card"
+        class="timeline-item"
         :class="'type-' + r.type"
       >
-        <div class="record-icon-wrap">{{ typeIcon(r.type) }}</div>
-        <div class="record-body">
-          <div class="record-title">{{ typeLabel(r.type) }}</div>
-          <div class="record-detail">{{ r.detail }}</div>
+        <div class="record-card">
+          <div class="record-icon-wrap">{{ typeIcon(r.type) }}</div>
+          <div class="record-body">
+            <!-- 睡眠：时段加粗显示 -->
+            <template v-if="r.type === 'sleep' && r.startTime">
+              <div class="record-timespan">{{ formatHM(r.startTime) }}~{{ formatHM(r.endTime) }}</div>
+              <div class="record-detail">{{ r.detail }}</div>
+            </template>
+            <!-- 其他：标题 + 详情 -->
+            <template v-else>
+              <div class="record-title">{{ typeLabel(r.type) }}
+                <span style="font-size:11px;color:#d1d5db;font-weight:400;margin-left:6px;">{{ formatHM(r.time) }}</span>
+              </div>
+              <div class="record-detail">{{ r.detail }}</div>
+            </template>
+          </div>
+          <button class="record-delete" @click="deleteRecord(r.id)">×</button>
         </div>
-        <div class="record-time">{{ formatTime(r.time) }}</div>
-        <button class="record-delete" @click="deleteRecord(r.id)">×</button>
       </div>
     </div>
     <div class="empty-state" v-else>
@@ -572,24 +664,46 @@
   <div class="modal-overlay" v-if="modal === 'sleep'" @click.self="closeModal">
     <div class="modal-sheet">
       <div class="modal-handle"></div>
-      <div class="modal-title">🌙 记录睡眠</div>
-      <div class="sleep-timer">
-        <div class="timer-display">{{ sleepTimerDisplay }}</div>
-        <div class="timer-label">{{ sleepRunning ? '睡着了～' : (sleepStart ? '已记录开始时间' : '点击开始计时') }}</div>
+      <div class="modal-title">🌙 睡眠记录</div>
+
+      <!-- 计时器区域 -->
+      <div class="sleep-modal-status">
+        <div class="sleep-modal-timer">{{ sleepTimerDisplay }}</div>
+        <div class="sleep-modal-desc">
+          {{ sleepRunning ? '正在睡觉中～' : (sleepStartTs ? '计时已停止' : '点击开始计时') }}
+        </div>
+        <div class="sleep-modal-starttime" v-if="sleepStartTs">
+          开始时间：{{ sleepStartTimeStr }}
+        </div>
         <div class="timer-btns">
-          <button class="timer-btn start" @click="toggleSleepTimer">{{ sleepRunning ? '😴 睡醒了' : '💤 开始睡' }}</button>
-          <button class="timer-btn stop" @click="resetSleepTimer" v-if="sleepStart">重置</button>
+          <button class="timer-btn start" @click="toggleSleepTimer" v-if="!sleepRunning">
+            💤 开始睡
+          </button>
+          <button class="timer-btn start" style="background:#ec4899" @click="stopAndSaveSleep" v-if="sleepRunning">
+            😴 睡醒了，保存
+          </button>
+          <button class="timer-btn stop" @click="resetSleepTimer" v-if="sleepStartTs">重置</button>
         </div>
       </div>
-      <div class="form-group" style="margin-top:8px">
-        <label class="form-label">或手动输入时长（分钟）</label>
-        <input class="form-input" type="number" v-model="sleepForm.duration" placeholder="例如 90">
+
+      <div class="divider">或手动输入</div>
+
+      <!-- 手动输入模式 -->
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">开始时间</label>
+          <input class="form-input" type="time" v-model="sleepForm.manualStart">
+        </div>
+        <div class="form-group">
+          <label class="form-label">结束时间</label>
+          <input class="form-input" type="time" v-model="sleepForm.manualEnd">
+        </div>
       </div>
       <div class="form-group">
-        <label class="form-label">备注</label>
+        <label class="form-label">备注（小睡/夜睡/午睡）</label>
         <input class="form-input" v-model="sleepForm.note" placeholder="例如：午睡，睡得很香">
       </div>
-      <button class="btn-submit" @click="saveSleep">保存记录</button>
+      <button class="btn-submit" @click="saveManualSleep" v-if="!sleepRunning">手动保存</button>
     </div>
   </div>
 
@@ -601,13 +715,7 @@
       <div class="form-group">
         <label class="form-label">喂养方式</label>
         <div class="chip-group">
-          <div
-            v-for="t in ['母乳', '配方奶', '混合']"
-            :key="t"
-            class="chip"
-            :class="{ selected: feedForm.type === t }"
-            @click="feedForm.type = t"
-          >{{ t }}</div>
+          <div v-for="t in ['母乳', '配方奶', '混合']" :key="t" class="chip" :class="{ selected: feedForm.type === t }" @click="feedForm.type = t">{{ t }}</div>
         </div>
       </div>
       <div class="form-row">
@@ -617,7 +725,7 @@
         </div>
         <div class="form-group">
           <label class="form-label">时长（分钟）</label>
-          <input class="form-input" type="number" v-model="feedForm.duration" placeholder="例如 15">
+          <input class="form-input" type="number" v-model="feedForm.duration" placeholder="例如 10">
         </div>
       </div>
       <div class="form-group">
@@ -640,13 +748,7 @@
       <div class="form-group">
         <label class="form-label">辅食内容（可多选）</label>
         <div class="chip-group">
-          <div
-            v-for="f in foodOptions"
-            :key="f"
-            class="chip"
-            :class="{ selected: foodForm.items.includes(f) }"
-            @click="toggleFood(f)"
-          >{{ f }}</div>
+          <div v-for="f in foodOptions" :key="f" class="chip" :class="{ selected: foodForm.items.includes(f) }" @click="toggleFood(f)">{{ f }}</div>
         </div>
       </div>
       <div class="form-group">
@@ -809,11 +911,24 @@ createApp({
     const toastVisible = ref(false)
     const toastMsg = ref('')
 
-    // 睡眠计时器
-    const sleepStart = ref(null)
-    const sleepRunning = ref(false)
-    const sleepElapsed = ref(0)
+    // ===== 睡眠计时器（持久化到 localStorage）=====
+    // sleepStartTs: 开始时间戳（ms），null 表示未开始
+    const sleepStartTs = ref(parseInt(localStorage.getItem('sleep_start_ts') || '0') || null)
+    const sleepRunning = ref(!!sleepStartTs.value)
+    const sleepElapsed = ref(0)  // 实时秒数（由 interval 驱动）
     let sleepInterval = null
+
+    // 根据持久化的开始时间计算已过秒数
+    function calcElapsed() {
+      if (!sleepStartTs.value) return 0
+      return Math.floor((Date.now() - sleepStartTs.value) / 1000)
+    }
+
+    // 开机/刷新时恢复计时
+    if (sleepRunning.value) {
+      sleepElapsed.value = calcElapsed()
+      sleepInterval = setInterval(() => { sleepElapsed.value = calcElapsed() }, 1000)
+    }
 
     const sleepTimerDisplay = computed(() => {
       const s = sleepElapsed.value
@@ -823,28 +938,73 @@ createApp({
       return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`
     })
 
+    // 开始时间字符串，用于显示
+    const sleepStartTimeStr = computed(() => {
+      if (!sleepStartTs.value) return ''
+      return formatHM(new Date(sleepStartTs.value).toISOString())
+    })
+
     function toggleSleepTimer() {
       if (!sleepRunning.value) {
-        sleepStart.value = new Date()
+        // 开始睡
+        const now = Date.now()
+        sleepStartTs.value = now
+        localStorage.setItem('sleep_start_ts', String(now))
         sleepRunning.value = true
-        sleepInterval = setInterval(() => { sleepElapsed.value++ }, 1000)
-      } else {
-        clearInterval(sleepInterval)
-        sleepRunning.value = false
-        sleepForm.value.duration = Math.round(sleepElapsed.value / 60)
+        sleepElapsed.value = 0
+        sleepInterval = setInterval(() => { sleepElapsed.value = calcElapsed() }, 1000)
       }
     }
+
     function resetSleepTimer() {
       clearInterval(sleepInterval)
       sleepRunning.value = false
-      sleepStart.value = null
+      sleepStartTs.value = null
       sleepElapsed.value = 0
-      sleepForm.value.duration = ''
+      localStorage.removeItem('sleep_start_ts')
     }
 
-    // 表单数据
-    const sleepForm = ref({ duration: '', note: '' })
-    const feedForm = ref({ type: '母乳', amount: '', duration: '', time: nowTime(), note: '' })
+    // 点"睡醒了"：用计时器开始/结束时间保存记录
+    function stopAndSaveSleep() {
+      clearInterval(sleepInterval)
+      const startIso = new Date(sleepStartTs.value).toISOString()
+      const endIso = new Date().toISOString()
+      const mins = Math.round(sleepElapsed.value / 60)
+      const label = sleepForm.value.note || (mins < 60 ? '小睡' : '睡眠')
+      const h = Math.floor(mins / 60), m = mins % 60
+      const durStr = h > 0 ? `${h}小时${m > 0 ? m + '分钟' : ''}` : `${m}分钟`
+      addSleepRecord(startIso, endIso, `${label}（${durStr}）`)
+      sleepRunning.value = false
+      sleepStartTs.value = null
+      sleepElapsed.value = 0
+      localStorage.removeItem('sleep_start_ts')
+      sleepForm.value = { manualStart: nowTime(), manualEnd: nowTime(), note: '' }
+    }
+
+    // 手动输入保存
+    function saveManualSleep() {
+      const { manualStart, manualEnd, note } = sleepForm.value
+      if (!manualStart || !manualEnd) { showToast('请填写开始和结束时间'); return }
+      const today = new Date().toISOString().slice(0, 10)
+      const startIso = `${today}T${manualStart}:00`
+      let endIso = `${today}T${manualEnd}:00`
+      // 如果结束时间早于开始（跨天情况，如夜睡），结束算作次日
+      if (manualEnd < manualStart) {
+        const nextDay = new Date(new Date(today).getTime() + 86400000).toISOString().slice(0, 10)
+        endIso = `${nextDay}T${manualEnd}:00`
+      }
+      const mins = Math.round((new Date(endIso) - new Date(startIso)) / 60000)
+      if (mins <= 0) { showToast('结束时间需晚于开始时间'); return }
+      const label = note || (mins < 60 ? '小睡' : '睡眠')
+      const h = Math.floor(mins / 60), m = mins % 60
+      const durStr = h > 0 ? `${h}小时${m > 0 ? m + '分钟' : ''}` : `${m}分钟`
+      addSleepRecord(startIso, endIso, `${label}（${durStr}）`)
+      sleepForm.value = { manualStart: nowTime(), manualEnd: nowTime(), note: '' }
+    }
+
+    // ===== 表单数据 =====
+    const sleepForm = ref({ manualStart: nowTime(), manualEnd: nowTime(), note: '' })
+    const feedForm = ref({ type: '配方奶', amount: '205', duration: '10', time: nowTime(), note: '' })
     const foodForm = ref({ items: [], custom: '', amount: '', reaction: '', note: '' })
     const poopForm = ref({ color: '', texture: '', amount: '', note: '' })
     const playForm = ref({ items: [], custom: '', duration: '', note: '' })
@@ -862,26 +1022,30 @@ createApp({
 
     function openModal(type) {
       if (type === 'feed') feedForm.value.time = nowTime()
+      if (type === 'sleep') {
+        sleepForm.value.manualStart = nowTime()
+        sleepForm.value.manualEnd = nowTime()
+      }
       modal.value = type
     }
-    function closeModal() {
-      if (sleepRunning.value) { clearInterval(sleepInterval); sleepRunning.value = false }
-      modal.value = null
-    }
+    function closeModal() { modal.value = null }
 
     function showToast(msg) {
       toastMsg.value = msg
       toastVisible.value = true
-      setTimeout(() => { toastVisible.value = false }, 2000)
+      setTimeout(() => { toastVisible.value = false }, 2200)
     }
 
-    function addRecord(type, detail) {
+    // 通用新增记录
+    function addRecord(type, detail, extra = {}) {
+      const now = new Date()
       const r = {
         id: Date.now(),
         type,
         detail,
-        time: new Date().toISOString(),
-        date: new Date().toISOString().slice(0, 10)
+        time: now.toISOString(),
+        date: now.toISOString().slice(0, 10),
+        ...extra
       }
       records.value.unshift(r)
       localStorage.setItem('baby_records', JSON.stringify(records.value))
@@ -889,14 +1053,22 @@ createApp({
       showToast('✅ 记录成功！')
     }
 
-    function saveSleep() {
-      const mins = sleepElapsed.value > 0 ? Math.round(sleepElapsed.value / 60) : sleepForm.value.duration
-      if (!mins) { showToast('请输入睡眠时长'); return }
-      const h = Math.floor(mins / 60), m = mins % 60
-      const dur = h > 0 ? `${h}小时${m > 0 ? m+'分钟' : ''}` : `${m}分钟`
-      addRecord('sleep', `睡了 ${dur}${sleepForm.value.note ? ' · ' + sleepForm.value.note : ''}`)
-      resetSleepTimer()
-      sleepForm.value = { duration: '', note: '' }
+    // 睡眠专用（需要存开始/结束时间用于展示）
+    function addSleepRecord(startIso, endIso, detail) {
+      const startDate = startIso.slice(0, 10)
+      const r = {
+        id: Date.now(),
+        type: 'sleep',
+        detail,
+        time: startIso,        // 用开始时间做排序key
+        date: startDate,
+        startTime: startIso,
+        endTime: endIso
+      }
+      records.value.unshift(r)
+      localStorage.setItem('baby_records', JSON.stringify(records.value))
+      closeModal()
+      showToast('✅ 睡眠记录已保存！')
     }
 
     function saveFeed() {
@@ -904,8 +1076,21 @@ createApp({
       if (feedForm.value.amount) parts.push(feedForm.value.amount + 'ml')
       if (feedForm.value.duration) parts.push(feedForm.value.duration + '分钟')
       if (feedForm.value.note) parts.push(feedForm.value.note)
-      addRecord('feed', parts.join(' · '))
-      feedForm.value = { type: '母乳', amount: '', duration: '', time: nowTime(), note: '' }
+      // 用表单里的时间构造 ISO（当天日期 + 选择的时间）
+      const today = new Date().toISOString().slice(0, 10)
+      const timeIso = `${today}T${feedForm.value.time}:00`
+      const r = {
+        id: Date.now(),
+        type: 'feed',
+        detail: parts.join(' · '),
+        time: timeIso,
+        date: today
+      }
+      records.value.unshift(r)
+      localStorage.setItem('baby_records', JSON.stringify(records.value))
+      closeModal()
+      showToast('✅ 记录成功！')
+      feedForm.value = { type: '配方奶', amount: '205', duration: '10', time: nowTime(), note: '' }
     }
 
     function toggleFood(f) {
@@ -913,10 +1098,9 @@ createApp({
       if (i >= 0) foodForm.value.items.splice(i, 1)
       else foodForm.value.items.push(f)
     }
-
     function saveFood() {
       const items = [...foodForm.value.items]
-      if (foodForm.value.custom) items.push(...foodForm.value.custom.split('、').map(s=>s.trim()).filter(Boolean))
+      if (foodForm.value.custom) items.push(...foodForm.value.custom.split('、').map(s => s.trim()).filter(Boolean))
       if (!items.length) { showToast('请选择辅食内容'); return }
       const parts = [items.join('、')]
       if (foodForm.value.amount) parts.push(foodForm.value.amount + 'g')
@@ -941,10 +1125,9 @@ createApp({
       if (i >= 0) playForm.value.items.splice(i, 1)
       else playForm.value.items.push(p)
     }
-
     function savePlay() {
       const items = [...playForm.value.items]
-      if (playForm.value.custom) items.push(...playForm.value.custom.split('、').map(s=>s.trim()).filter(Boolean))
+      if (playForm.value.custom) items.push(...playForm.value.custom.split('、').map(s => s.trim()).filter(Boolean))
       if (!items.length && !playForm.value.duration) { showToast('请填写游玩内容'); return }
       const parts = items.length ? [items.join('、')] : []
       if (playForm.value.duration) parts.push(playForm.value.duration + '分钟')
@@ -985,47 +1168,53 @@ createApp({
     }
 
     // 日期导航
-    const isToday = computed(() => viewDate.value === new Date().toISOString().slice(0,10))
+    const isToday = computed(() => viewDate.value === new Date().toISOString().slice(0, 10))
     const viewDateLabel = computed(() => {
       if (isToday.value) return '今天'
       const d = new Date(viewDate.value + 'T00:00:00')
-      return `${d.getMonth()+1}月${d.getDate()}日`
+      return `${d.getMonth() + 1}月${d.getDate()}日`
     })
     const todayLabel = computed(() => {
       const d = new Date()
-      const weeks = ['日','一','二','三','四','五','六']
-      return `${d.getMonth()+1}月${d.getDate()}日 周${weeks[d.getDay()]}`
+      const weeks = ['日', '一', '二', '三', '四', '五', '六']
+      return `${d.getMonth() + 1}月${d.getDate()}日 周${weeks[d.getDay()]}`
     })
 
     function prevDay() {
       const d = new Date(viewDate.value + 'T00:00:00')
       d.setDate(d.getDate() - 1)
-      viewDate.value = d.toISOString().slice(0,10)
+      viewDate.value = d.toISOString().slice(0, 10)
     }
     function nextDay() {
       if (isToday.value) return
       const d = new Date(viewDate.value + 'T00:00:00')
       d.setDate(d.getDate() + 1)
-      viewDate.value = d.toISOString().slice(0,10)
+      viewDate.value = d.toISOString().slice(0, 10)
     }
 
+    // 时间线按时间升序（早的在上面）
     const viewRecords = computed(() =>
-      records.value.filter(r => r.date === viewDate.value)
-        .sort((a,b) => new Date(b.time) - new Date(a.time))
+      records.value
+        .filter(r => r.date === viewDate.value)
+        .sort((a, b) => new Date(a.time) - new Date(b.time))
     )
     const todayRecords = computed(() =>
-      records.value.filter(r => r.date === new Date().toISOString().slice(0,10))
+      records.value.filter(r => r.date === new Date().toISOString().slice(0, 10))
     )
 
-    // 今日统计
+    // 今日统计（从记录里读 startTime/endTime）
     const todaySleepHours = computed(() => {
-      const sleepRecs = todayRecords.value.filter(r => r.type === 'sleep')
       let total = 0
-      sleepRecs.forEach(r => {
-        const m = r.detail.match(/(\d+)小时/)
-        const mm = r.detail.match(/(\d+)分钟/)
-        if (m) total += parseInt(m[1]) * 60
-        if (mm) total += parseInt(mm[1])
+      todayRecords.value.filter(r => r.type === 'sleep').forEach(r => {
+        if (r.startTime && r.endTime) {
+          total += (new Date(r.endTime) - new Date(r.startTime)) / 60000
+        } else {
+          // 兼容旧格式
+          const mh = r.detail.match(/(\d+)小时/)
+          const mm = r.detail.match(/(\d+)分钟/)
+          if (mh) total += parseInt(mh[1]) * 60
+          if (mm) total += parseInt(mm[1])
+        }
       })
       return total > 0 ? (total / 60).toFixed(1) : 0
     })
@@ -1042,30 +1231,32 @@ createApp({
     const todayFoodCount = computed(() => todayRecords.value.filter(r => r.type === 'food').length)
 
     function typeIcon(t) {
-      return { sleep:'🌙', feed:'🍼', food:'🥣', poop:'💩', play:'🧸', mood:'😊', weight:'⚖️', note:'📝' }[t] || '📌'
+      return { sleep: '🌙', feed: '🍼', food: '🥣', poop: '💩', play: '🧸', mood: '😊', weight: '⚖️', note: '📝' }[t] || '📌'
     }
     function typeLabel(t) {
-      return { sleep:'睡眠记录', feed:'喂养记录', food:'辅食记录', poop:'便便记录', play:'游玩记录', mood:'心情记录', weight:'生长记录', note:'备注' }[t] || '记录'
+      return { sleep: '睡眠', feed: '喂养', food: '辅食', poop: '便便', play: '游玩', mood: '心情', weight: '生长', note: '备注' }[t] || '记录'
     }
-    function formatTime(iso) {
+    function formatHM(iso) {
+      if (!iso) return ''
       const d = new Date(iso)
-      return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`
+      return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`
     }
 
     onUnmounted(() => { if (sleepInterval) clearInterval(sleepInterval) })
 
     return {
       babyName, records, modal, viewDate, toastVisible, toastMsg,
-      sleepStart, sleepRunning, sleepElapsed, sleepTimerDisplay,
+      sleepStartTs, sleepRunning, sleepElapsed, sleepTimerDisplay, sleepStartTimeStr,
       sleepForm, feedForm, foodForm, poopForm, playForm, moodForm, weightForm, noteForm,
       foodOptions, playOptions,
-      openModal, closeModal, showToast,
-      saveSleep, saveFeed, saveFood, savePoop, savePlay, saveMood, saveWeight, saveNote,
-      toggleFood, togglePlay, toggleSleepTimer, resetSleepTimer,
+      openModal, closeModal,
+      toggleSleepTimer, resetSleepTimer, stopAndSaveSleep, saveManualSleep,
+      saveFeed, saveFood, savePoop, savePlay, saveMood, saveWeight, saveNote,
+      toggleFood, togglePlay,
       deleteRecord, prevDay, nextDay,
       isToday, viewDateLabel, todayLabel, viewRecords, todayRecords,
       todaySleepHours, todayFeedCount, todayFeedTotal, todayPoopCount, todayFoodCount,
-      typeIcon, typeLabel, formatTime
+      typeIcon, typeLabel, formatHM
     }
   }
 }).mount('#app')
